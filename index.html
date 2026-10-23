@@ -1,0 +1,3059 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fit1000 - FitRun Challenge</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .phone-container {
+      max-width: 460px;
+      min-height: 100vh;
+    }
+    @media (min-width: 640px) {
+      .phone-container {
+        min-height: 880px;
+        height: 92vh;
+      }
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 flex justify-center items-center min-h-screen p-0 sm:p-4 selection:bg-brand-500 selection:text-white">
+
+  <!-- Application Frame -->
+  <div class="phone-container w-full bg-white sm:rounded-3xl shadow-2xl flex flex-col justify-between overflow-hidden relative border-0 sm:border-8 border-gray-900">
+    
+    <!-- HEADER APP PERMANENT -->
+    <header class="bg-white border-b border-gray-100 px-5 py-3.5 flex items-center justify-between shrink-0 z-20">
+      <div class="flex items-center space-x-2">
+        <span class="w-3 h-3 rounded-full bg-brand-600 inline-block animate-pulse"></span>
+        <span id="header-title" class="font-display font-bold text-xs uppercase tracking-wider text-brand-600 truncate max-w-[220px]">
+          FIT1000 • FITRUN CHALLENGE
+        </span>
+      </div>
+
+      <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-brand-700 text-[11px] font-extrabold border border-blue-200">
+        <span>Collection FitRun</span>
+      </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE CONTENT AREA -->
+    <main class="flex-1 flex flex-col p-5 overflow-y-auto relative no-scrollbar">
+
+      <!-- ===================================================================
+           1. CATALOGUE / TABLEAU DE BORD
+           =================================================================== -->
+      <section id="screen-dashboard" class="space-y-4 py-1">
+        
+        <!-- En-tête du catalogue -->
+        <div class="flex items-center justify-between pt-1">
+          <div>
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block">Entraînement</span>
+            <h1 class="text-2xl font-display font-black text-gray-900 leading-tight">
+              Toutes les Séances
+            </h1>
+          </div>
+          <span id="workout-count-badge" class="px-3 py-1 bg-blue-50 border border-blue-200 text-brand-700 text-xs font-extrabold rounded-full">
+            8 séances
+          </span>
+        </div>
+
+        <!-- BLOC DE FILTRES -->
+        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+              <span>🔍 Filtres de recherche</span>
+            </h2>
+            <button onclick="resetFilters()" class="text-[11px] text-brand-600 font-bold hover:underline">
+              Réinitialiser
+            </button>
+          </div>
+
+          <!-- 1. FILTRE PAR COLLECTION -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Collection</label>
+            <div class="flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
+              <button id="filter-col-all" onclick="filterCollection('ALL')" class="px-3 py-1.5 rounded-xl font-bold bg-brand-600 text-white shrink-0 shadow-xs">
+                Toutes
+              </button>
+              <button id="filter-col-fitrun" onclick="filterCollection('FITRUN CHALLENGE')" class="px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0">
+                🏆 FITRUN CHALLENGE
+              </button>
+              <button id="filter-col-gammes" onclick="filterCollection('GAMMES')" class="px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0">
+                🏃 GAMMES
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. FILTRE PAR DIFFICULTÉ -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Difficulté</label>
+            <div class="flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
+              <button id="filter-diff-all" onclick="filterDifficulty('ALL')" class="px-3 py-1.5 rounded-xl font-bold bg-gray-900 text-white shrink-0">
+                Toutes
+              </button>
+              <button id="filter-diff-1" onclick="filterDifficulty(1)" class="px-3 py-1.5 rounded-xl font-bold bg-white text-emerald-700 border border-emerald-200 shrink-0">
+                🟢 Facile (1/4)
+              </button>
+              <button id="filter-diff-2" onclick="filterDifficulty(2)" class="px-3 py-1.5 rounded-xl font-bold bg-white text-blue-700 border border-blue-200 shrink-0">
+                🔵 Moyen (2/4)
+              </button>
+              <button id="filter-diff-3" onclick="filterDifficulty(3)" class="px-3 py-1.5 rounded-xl font-bold bg-white text-rose-700 border border-rose-200 shrink-0">
+                🔴 Difficile (3/4)
+              </button>
+              <button id="filter-diff-4" onclick="filterDifficulty(4)" class="px-3 py-1.5 rounded-xl font-bold bg-white text-gray-900 border border-gray-300 shrink-0">
+                ⚫ Extrême (4/4)
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. FILTRE PAR FOCUS MUSCLE CIBLÉ -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Focus Muscle ciblé</label>
+            <div class="flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
+              <button id="filter-focus-all" onclick="filterFocus('ALL')" class="px-3 py-1 rounded-lg font-bold bg-gray-200 text-gray-800 shrink-0">
+                Tous les focus
+              </button>
+              <button id="filter-focus-abs" onclick="filterFocus('ABDOMINAUX')" class="px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0">
+                Abdominaux
+              </button>
+              <button id="filter-focus-bas" onclick="filterFocus('BAS DU CORPS')" class="px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0">
+                Bas du corps
+              </button>
+              <button id="filter-focus-haut" onclick="filterFocus('HAUT DU CORPS')" class="px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0">
+                Haut du corps
+              </button>
+              <button id="filter-focus-full" onclick="filterFocus('FULL BODY')" class="px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0">
+                Full body
+              </button>
+              <button id="filter-focus-test" onclick="filterFocus('TEST EVALUATION')" class="px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0">
+                Test Évaluation
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LISTE DES SÉANCES -->
+        <div id="workouts-list-container" class="space-y-3 pt-1"></div>
+
+      </section>
+
+      <!-- ===================================================================
+           FRC8 - OURS MAL LÉCHÉ
+           =================================================================== -->
+      <section id="screen-s8-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4 bg-white">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-extrabold text-[10px]">Difficulté : 2/4 (Pastille Bleue)</span>
+              <span class="text-xs font-bold text-brand-600">FITRUN CHALLENGE</span>
+            </div>
+            <h1 class="text-2xl font-display font-black text-blue-600 leading-tight">
+              FRC8 - OURS MAL LÉCHÉ
+            </h1>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide">Focus : Full body</p>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3 text-gray-800">
+            <h2 class="font-display font-extrabold text-sm uppercase tracking-wider text-blue-600 border-b border-gray-200 pb-1">
+              Présentation de la séance
+            </h2>
+
+            <div class="space-y-3 text-xs leading-relaxed">
+              <p class="font-semibold text-gray-800">
+                15 x 1/3 du Temps de soutien de la Planche du Test Day (FRC5).
+              </p>
+
+              <!-- Champ de saisie du temps de soutien -->
+              <div class="p-3 bg-white rounded-xl border border-blue-200 space-y-2">
+                <label class="block font-bold text-blue-900 text-xs">
+                  ⏱️ Temps de soutien de la planche (FRC5) :
+                </label>
+                <div class="flex items-center gap-2">
+                  <input type="text" id="s8-plank-input" value="2'23" placeholder="Ex: 2'23" oninput="updateS8CalculatedTimes()" class="w-28 px-3 py-1.5 rounded-lg border border-gray-300 font-bold text-sm focus:ring-2 focus:ring-blue-500 outline-none text-center">
+                  <span class="text-[11px] text-gray-500 font-medium">(format m'ss")</span>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 grid grid-cols-2 gap-2 text-center text-xs">
+                  <div class="p-2 bg-red-50 rounded-lg border border-red-100">
+                    <span class="text-[10px] font-bold text-red-600 uppercase block">Exercice (1/3)</span>
+                    <span id="s8-work-time-display" class="font-black text-red-700 text-sm">46"</span>
+                  </div>
+                  <div class="p-2 bg-emerald-50 rounded-lg border border-emerald-100">
+                    <span class="text-[10px] font-bold text-emerald-600 uppercase block">Récup (50%)</span>
+                    <span id="s8-rest-time-display" class="font-black text-emerald-700 text-sm">23"</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-2">
+                <span class="font-extrabold text-gray-900 block text-xs uppercase tracking-wider border-b border-gray-100 pb-1">Circuit de 5 exercices (3 tours)</span>
+                <ul class="space-y-1.5 text-gray-700 font-medium">
+                  <li><strong class="text-blue-600">1. Planche :</strong> Position classique sur les avant-bras.</li>
+                  <li><strong class="text-blue-600">2. Chaise :</strong> Dos contre le mur, cuisses parallèles au sol.</li>
+                  <li><strong class="text-blue-600">3. Ours :</strong> À 4 pattes en appui sur la pointe des pieds (pas sur les genoux), mains au sol sous les épaules, genoux sous le bassin, tibias parallèles au sol.</li>
+                  <li><strong class="text-blue-600">4. Araignée :</strong> Position de la planche en appui sur les mains (bras tendus).</li>
+                  <li><strong class="text-blue-600">5. Pont statique :</strong> Sur le dos, bassin relevé, fessiers contractés.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS8WorkoutFlow()" class="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-black text-lg rounded-2xl shadow-xl active:scale-95 transition-all">
+            Lancer la séance
+          </button>
+        </div>
+      </section>
+
+      <!-- ÉCRAN DÉROULEMENT FRC8 -->
+      <section id="screen-s8-runner" class="hidden flex-1 flex flex-col justify-between py-2 text-center bg-white">
+        <div>
+          <span id="s8-phase-badge" class="px-3 py-1 rounded-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-wider">
+            Passage 1 / 15 • Exercice
+          </span>
+          <h2 id="s8-exercise-title" class="text-2xl font-display font-black text-blue-600 mt-2">
+            Planche
+          </h2>
+          <div id="s8-consigne-box" class="mt-2 p-3 bg-gray-50 rounded-2xl border border-gray-200 text-xs text-gray-700 text-left font-medium leading-relaxed max-w-xs mx-auto">
+            <span id="s8-consigne-text"></span>
+          </div>
+        </div>
+
+        <div class="my-auto py-2">
+          <div id="s8-timer-box" class="p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all">
+            <span id="s8-state-label" class="text-xs font-black uppercase tracking-widest text-red-600 block mb-1">
+              🔥 EXERCICE
+            </span>
+
+            <span id="s8-timer-display" class="font-display font-black text-6xl tracking-tight text-red-600 block">
+              00:46
+            </span>
+
+            <div class="mt-2 text-xs font-extrabold text-red-500 border-t border-red-200/60 pt-2">
+              <span id="s8-subtext-display">Maintien de la posture</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <button id="s8-action-btn" onclick="handleS8Action()" class="w-full py-5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide">
+            Pause
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC7 - ABCD COMME B.A.-BA
+           =================================================================== -->
+      <section id="screen-s7-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4 bg-white">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-extrabold text-[10px]">Difficulté : 1/4 (Pastille Verte)</span>
+              <span class="text-xs font-bold text-emerald-600">FITRUN CHALLENGE • GAMMES</span>
+            </div>
+            <h1 class="text-2xl font-display font-black text-emerald-600 leading-tight">
+              FRC7 - ABCD COMME B.A.-BA
+            </h1>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide">Focus : Bas du corps</p>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3 text-gray-800">
+            <h2 class="font-display font-extrabold text-sm uppercase tracking-wider text-emerald-600 border-b border-gray-200 pb-1">
+              Présentation de la séance
+            </h2>
+
+            <div class="space-y-3 text-xs leading-relaxed">
+              <p class="font-semibold text-gray-800">
+                4 Exercices de Gammes à enchaîner sur une distance de 20 - 30 mètres.
+              </p>
+
+              <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-[11px] font-semibold">
+                💡 <strong>Conseil :</strong> Si vous êtes débutant ou un peu en délicatesse avec votre mollet, réduisez la distance.
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-2">
+                <span class="font-extrabold text-gray-900 block text-xs uppercase tracking-wider border-b border-gray-100 pb-1">Aller = Gammes</span>
+                <ul class="space-y-1 text-gray-700 font-medium">
+                  <li><strong class="text-emerald-600">A =</strong> Montée de genoux</li>
+                  <li><strong class="text-emerald-600">B =</strong> Jambes tendues</li>
+                  <li><strong class="text-emerald-600">C =</strong> Foulées Bondissantes</li>
+                  <li><strong class="text-emerald-600">D =</strong> Talon-fesses</li>
+                </ul>
+              </div>
+
+              <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-[11px] font-semibold">
+                🔄 <strong>Retour :</strong> Footing tranquille.<br>
+                🔁 <strong>Séquence :</strong> Faire 3 séries : A - A - B - B - C - C - D - D
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS7WorkoutFlow()" class="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg rounded-2xl shadow-xl active:scale-95 transition-all">
+            Lancer la séance
+          </button>
+        </div>
+      </section>
+
+      <!-- ÉCRAN DÉROULEMENT FRC7 -->
+      <section id="screen-s7-runner" class="hidden flex-1 flex flex-col justify-between py-2 text-center bg-white">
+        <div>
+          <span id="s7-gamme-badge" class="px-3 py-1 rounded-full bg-emerald-600 text-white font-extrabold text-[10px] uppercase tracking-wider">
+            Passage 1 / 3 • Gamme A
+          </span>
+          <h2 id="s7-gamme-title" class="text-3xl font-display font-black text-emerald-600 mt-4">
+            Écran Gamme A
+          </h2>
+        </div>
+
+        <div class="my-auto py-6">
+          <div class="p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg space-y-4">
+            <span class="text-xs font-black uppercase tracking-widest text-emerald-700 block">
+              Consigne :
+            </span>
+
+            <div id="s7-consigne-main" class="font-display font-black text-2xl text-emerald-900 leading-snug">
+              Faire 2 répétitions de Montée de Genoux
+            </div>
+
+            <div id="s7-consigne-sub" class="pt-2 border-t border-emerald-200 text-sm font-extrabold text-emerald-700">
+              Retour tranquille
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button id="s7-action-btn" onclick="handleS7Action()" class="w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide">
+            Passer à l'étape suivante
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC6 - LES ABOMINABLES ABDOMINAUX
+           =================================================================== -->
+      <section id="screen-s6-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4 bg-white">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-extrabold text-[10px]">Difficulté : 3/4</span>
+              <span class="text-xs font-bold text-brand-600">FITRUN CHALLENGE</span>
+            </div>
+            <h1 class="text-2xl font-display font-black text-rose-600 leading-tight">
+              FRC6 - LES ABOMINABLES ABDOMINAUX
+            </h1>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3 text-gray-800">
+            <h2 class="font-display font-extrabold text-sm uppercase tracking-wider text-rose-600 border-b border-gray-200 pb-1">
+              Présentation de la séance (3 Tabatas)
+            </h2>
+
+            <div class="space-y-3 text-xs leading-relaxed">
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-gray-900 block text-sm">Exercice 1 : Élévation jambes 4 temps</span>
+                <p class="text-gray-700">
+                  <strong>Consigne :</strong> Allongé sur le dos les jambes tendues au sol, ramener la jambe gauche, puis la droite avant de ramener la gauche puis la droite vers le sol. Vous n'êtes pas obligé de ramener les jambes au ras du sol pour faire travailler les abdos. Bien maintenir le dos collé au sol.
+                </p>
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-gray-900 block text-sm">Exercice 2 : Crunch, Sit-up ou Crunch foot to foot</span>
+                <p class="text-gray-700">
+                  <strong>Consigne :</strong> Au choix vous pouvez mixer 2 ou les 3 exercices ou ne faire qu'un seul de ces 3 exercices durant votre Tabata.
+                </p>
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-gray-900 block text-sm">Exercice 3 : Mountain climbers</span>
+                <p class="text-gray-700">
+                  <strong>Consigne :</strong> Mountain climbers en mode Tabata.
+                </p>
+              </div>
+
+              <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-brand-800 text-[11px] font-semibold">
+                ⏱️ Format : 3 Tabatas de 3'50 (15 phases de 20" d'exercice / 10" de repos) séparés par 2'00 de récupération active.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS6WorkoutFlow()" class="w-full py-4 px-6 bg-rose-600 hover:bg-rose-700 text-white font-black text-lg rounded-2xl shadow-xl active:scale-95 transition-all">
+            Lancer la séance
+          </button>
+        </div>
+      </section>
+
+      <!-- ÉCRAN DÉROULEMENT FRC6 -->
+      <section id="screen-s6-runner" class="hidden flex-1 flex flex-col justify-between py-2 text-center bg-white">
+        <div>
+          <span id="s6-exercise-badge" class="px-3 py-1 rounded-full bg-rose-600 text-white font-extrabold text-[10px] uppercase tracking-wider">
+            Tabata 1 / 3 • Exercice 1
+          </span>
+          <h2 id="s6-exercise-title" class="text-xl font-display font-black text-rose-600 mt-2">
+            Élévation jambes 4 temps
+          </h2>
+          <div id="s6-exercise-consigne-box" class="mt-2 p-3 bg-gray-50 rounded-2xl border border-gray-200 text-xs text-gray-700 text-left font-medium leading-relaxed max-w-xs mx-auto">
+            <span id="s6-exercise-consigne-text"></span>
+          </div>
+        </div>
+
+        <div class="my-auto py-2">
+          <div id="s6-timer-box" class="p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all">
+            <span id="s6-tabata-state-label" class="text-xs font-black uppercase tracking-widest text-red-600 block mb-1">
+              🔥 TRAVAIL
+            </span>
+
+            <span id="s6-timer-display" class="font-display font-black text-6xl tracking-tight text-red-600 block">
+              03:50
+            </span>
+
+            <div class="mt-2 flex items-center justify-between text-xs font-extrabold text-red-500 border-t border-red-200/60 pt-2">
+              <span id="s6-tabata-phase-badge">Phase 1 / 15</span>
+              <span id="s6-tabata-interval-display">Reste phase : 20s</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <button id="s6-action-btn" onclick="handleS6Action()" class="w-full py-5 px-6 bg-rose-600 hover:bg-rose-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide">
+            Pause
+          </button>
+          <button id="s6-skip-rest-btn" onclick="skipS6Rest()" class="hidden w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-md active:scale-95 transition-all">
+            Passer la récup ▶
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC5 - TEST DAY N° 1
+           =================================================================== -->
+      <section id="screen-s5-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full bg-black text-white font-extrabold text-[10px]">Difficulté : 4/4</span>
+              <span class="text-xs font-bold text-brand-600">FITRUN CHALLENGE</span>
+            </div>
+            <h1 class="text-2xl font-display font-black text-black leading-tight">
+              FRC5 - TEST DAY N° 1
+            </h1>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3 text-gray-800">
+            <h2 class="font-display font-extrabold text-sm uppercase tracking-wider text-black border-b border-gray-200 pb-1">
+              Présentation de la séance (3 TESTS au menu)
+            </h2>
+
+            <div class="space-y-3 text-xs leading-relaxed">
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-black block text-sm">Test n° 1 : La planche</span>
+                <p class="text-gray-700"><strong>Consigne :</strong> Tenez le maximum en position de planche. Sans cambrer le dos. Dès que la posture n'est plus possible stoppez le chrono.</p>
+                <div class="mt-1 pt-1 border-t border-gray-100 text-[11px] text-amber-800 font-semibold">
+                  🛡️ Plan B : Planche sur les genoux
+                </div>
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-black block text-sm">Test n° 2 : Maximum de Squats jump</span>
+                <p class="text-gray-700"><strong>Consigne :</strong> Faire le maximum de Squats Jump en 2'.</p>
+              </div>
+
+              <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-xs space-y-1">
+                <span class="font-extrabold text-black block text-sm">Test n° 3 : Maximum de Pompes</span>
+                <p class="text-gray-700"><strong>Consigne :</strong> Faire le maximum de Pompes en 2'.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS5WorkoutFlow()" class="w-full py-4 px-6 bg-black hover:bg-gray-800 text-white font-black text-lg rounded-2xl shadow-xl active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s5-runner" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span id="s5-test-badge" class="px-3 py-1 rounded-full bg-black text-white font-extrabold text-[10px] uppercase tracking-wider">
+            Test n° 1 / 3
+          </span>
+          <h2 id="s5-exercise-title" class="text-xl font-display font-black text-black mt-2">
+            Test n° 1 : La planche
+          </h2>
+        </div>
+
+        <div class="my-auto py-2">
+          <div id="s5-timer-box" class="p-6 rounded-3xl bg-gray-50 border-4 border-black inline-block w-full max-w-xs shadow-lg transition-all">
+            <span id="s5-box-main-target" class="hidden font-display font-black text-xl text-black block mb-2 leading-tight"></span>
+
+            <span id="s5-timer-display" class="font-display font-black text-6xl tracking-tight text-black block">
+              0'00
+            </span>
+
+            <span id="s5-warning-message" class="text-xs font-extrabold text-rose-600 uppercase tracking-wide mt-3 block">
+              Planche en cours
+            </span>
+          </div>
+
+          <div id="s5-reps-input-block" class="hidden max-w-xs mx-auto mt-4 p-3 bg-gray-50 rounded-2xl border border-gray-200 space-y-2">
+            <label id="s5-reps-label" class="block text-xs font-bold text-gray-800 text-left">
+              Nombre de répétitions effectuées :
+            </label>
+            <input type="number" id="s5-reps-input" placeholder="Ex: 45" class="w-full px-3 py-2 rounded-xl border border-gray-300 font-bold text-base focus:ring-2 focus:ring-black outline-none text-center">
+          </div>
+        </div>
+
+        <div>
+          <button id="s5-action-btn" onclick="handleS5Action()" class="w-full py-5 px-6 bg-black hover:bg-gray-800 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC1 - LE VOYAGE DE 1000 LIEUES
+           =================================================================== -->
+      <section id="screen-s1-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-5">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-extrabold text-[10px]">Difficulté : 2/4</span>
+            </div>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Objectif 5' de Gainage</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-5 rounded-2xl border border-blue-100 space-y-3 text-gray-700">
+            <div class="flex items-center gap-2 text-brand-700 font-bold"><span>Consigne :</span></div>
+            <p class="text-sm leading-relaxed">
+              En position de <strong>planche</strong>.<br>
+              À découper comme vous souhaitez : en continu, découpé en 5 x 1', 10 x 30",... peu importe, le but est de tenir ces 5 minutes.
+            </p>
+
+            <div class="p-3 bg-amber-50/90 rounded-xl border border-amber-200/80 text-xs text-amber-900 space-y-1">
+              <p class="font-bold flex items-center gap-1 text-amber-800">🛡️ Plan B :</p>
+              <p>Faire la planche sur les genoux si c'est trop difficile en position de planche normale.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button onclick="startS1Ex1Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s1-ex1-timer" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Objectif 5' de Gainage</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Mouvement : Planche</p>
+        </div>
+
+        <div class="my-auto py-2">
+          <div class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s1-ex1-timer-display" class="font-display font-black text-6xl tracking-tight text-brand-700 block">05:00</span>
+            <span id="s1-ex1-status-label" class="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-2 block">Prêt</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="s1-ex1-btn" onclick="handleS1Ex1Click()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s1-ex2-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-5">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Tabata abdominaux</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-5 rounded-2xl border border-blue-100 space-y-3 text-gray-700">
+            <div class="flex items-center gap-2 text-brand-700 font-bold"><span>Consigne :</span></div>
+            <p class="text-sm leading-relaxed">
+              Crunch, Crunch foot to foot ou Sit-up en mode Tabata (3'50). 15 phases alternant 20" de travail et 10" de repos.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button onclick="startS1Ex2Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s1-ex2-timer" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Tabata abdominaux</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Crunch, Crunch foot to foot ou Sit-up</p>
+          <div id="s1-tabata-phase-badge" class="inline-block mt-3 px-4 py-1.5 rounded-full bg-gray-100 text-gray-700 font-extrabold text-sm border border-gray-200">Phase 1 / 15</div>
+        </div>
+
+        <div class="my-auto py-2">
+          <div id="s1-tabata-box" class="p-8 rounded-3xl bg-red-50 border-4 border-red-500 transition-all duration-500 inline-block w-full max-w-xs shadow-lg">
+            <span id="s1-tabata-state-label" class="text-sm font-black uppercase tracking-widest text-red-600 block mb-1">🔥 TRAVAIL</span>
+            <span id="s1-ex2-timer-display" class="font-display font-black text-6xl tracking-tight text-red-600 block my-2">03:50</span>
+            <span id="s1-tabata-interval-display" class="text-xs font-bold text-red-500 block">Reste phase : 20s</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="s1-ex2-btn" onclick="handleS1Ex2Click()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC2 - GRIMPER DES MONTAGNES
+           =================================================================== -->
+      <section id="screen-s2-ex1-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-extrabold text-[10px]">Difficulté : 3/4</span>
+            </div>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Objectif 200 Mountain Climbers</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-100 space-y-3 text-gray-700 text-xs">
+            <div class="flex items-center gap-2 text-brand-700 font-bold text-sm"><span>Consigne :</span></div>
+            <p class="leading-relaxed">
+              Faire 200 Mountain climbers. Vous avez le droit de breaker. Mais dans ce cas, vous devez faire 1' d'Abdominaux Sit-up, Crunch ou crunch foot to foot. Le choix est libre.
+            </p>
+
+            <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 space-y-2">
+              <label class="flex items-start gap-2.5 cursor-pointer">
+                <input type="checkbox" id="s2-ex1-planb-check" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500 w-4 h-4">
+                <div>
+                  <span class="font-bold block text-xs">Choisir le plan B</span>
+                  <span class="text-[11px] text-amber-800 block">Ajuste le compte à rebours de récupération active à 30" d'abdominaux au lieu de 1 minute.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS2Ex1Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s2-ex1-workout" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Objectif 200 Mountain Climbers</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Mouvement : Mountain Climbers</p>
+        </div>
+
+        <div class="my-auto py-2 space-y-3">
+          <div id="s2-ex1-box" class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s2-ex1-status-title" class="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Restant</span>
+            <span id="s2-ex1-counter-display" class="font-display font-black text-6xl tracking-tight text-brand-700 block">200</span>
+            <span id="s2-ex1-subtext" class="text-xs font-bold text-gray-400 block mt-1">Prêt</span>
+          </div>
+
+          <div id="s2-ex1-input-container" class="hidden max-w-xs mx-auto p-3 bg-gray-50 rounded-2xl border border-gray-200 space-y-2">
+            <label class="block text-xs font-bold text-gray-700 text-left">Nombre de Mountain Climbers effectués :</label>
+            <div class="flex gap-2">
+              <input type="number" id="s2-ex1-reps-input" placeholder="Ex: 45" class="w-full px-3 py-2 rounded-xl border border-gray-300 font-bold text-base focus:ring-2 focus:ring-brand-500 outline-none">
+              <button onclick="submitS2Ex1Series()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs whitespace-nowrap">
+                Lancer ma récup Active
+              </button>
+            </div>
+          </div>
+
+          <div id="s2-ex1-series-recap" class="hidden text-xs text-left max-w-xs mx-auto bg-gray-100 p-3 rounded-xl space-y-1 font-semibold text-gray-700"></div>
+        </div>
+
+        <div>
+          <button id="s2-ex1-main-btn" onclick="handleS2Ex1MainAction()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s2-ex2-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">3 Séries de pompes</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-100 space-y-3 text-gray-700 text-xs">
+            <div class="flex items-center gap-2 text-brand-700 font-bold text-sm"><span>Consigne :</span></div>
+            <p class="leading-relaxed">Faire un maximum de pompes jusqu'à l'échec. 1' de récupération entre les séries.</p>
+            <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900">
+              <span class="font-bold block">Plan B :</span>
+              <span>Faire les pompes sur les genoux.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS2Ex2Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s2-ex2-workout" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">3 Séries de pompes</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Mouvement : Pompes à l'échec</p>
+        </div>
+
+        <div class="my-auto py-2 space-y-3">
+          <div id="s2-ex2-box" class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s2-ex2-status-title" class="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Statut</span>
+            <span id="s2-ex2-counter-display" class="font-display font-black text-5xl tracking-tight text-brand-700 block">Série 1</span>
+            <span id="s2-ex2-subtext" class="text-xs font-bold text-gray-400 block mt-1">Prêt</span>
+          </div>
+
+          <div id="s2-ex2-input-container" class="hidden max-w-xs mx-auto p-3 bg-gray-50 rounded-2xl border border-gray-200 space-y-2">
+            <label class="block text-xs font-bold text-gray-700 text-left">Nombre de pompes effectuées :</label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="s2-ex2-reps-input" placeholder="Ex: 15" class="w-full px-3 py-2 rounded-xl border border-gray-300 font-bold text-base focus:ring-2 focus:ring-brand-500 outline-none">
+              <label class="flex items-center gap-1.5 shrink-0 bg-white px-2 py-2 rounded-xl border border-gray-200 cursor-pointer">
+                <input type="checkbox" id="s2-ex2-series-planb" class="rounded text-amber-600">
+                <span class="text-[11px] font-bold text-amber-800">Plan B</span>
+              </label>
+            </div>
+            <button id="s2-ex2-submit-btn" onclick="submitS2Ex2Series()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs">
+              Lancer ma récup
+            </button>
+          </div>
+
+          <div id="s2-ex2-series-recap" class="hidden text-xs text-left max-w-xs mx-auto bg-gray-100 p-3 rounded-xl space-y-1 font-semibold text-gray-700"></div>
+        </div>
+
+        <div>
+          <button id="s2-ex2-main-btn" onclick="handleS2Ex2MainAction()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC3 - LE PONT COMME RÉCUPÉRATION
+           =================================================================== -->
+      <section id="screen-s3-ex1-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-extrabold text-[10px]">Difficulté : 3/4</span>
+            </div>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Squats & Pont Statique</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-100 space-y-3 text-gray-700 text-xs">
+            <div class="flex items-center gap-2 text-brand-700 font-bold text-sm"><span>Consigne :</span></div>
+            <p class="leading-relaxed">
+              Faire 5 séries de squats entrecoupées de pont statique selon le niveau choisi.
+            </p>
+
+            <!-- CHOIX DU NIVEAU SÉANCE 3 EXERCICE 1 -->
+            <div class="p-3 bg-white rounded-xl border border-blue-200 text-gray-800 space-y-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-brand-700">🎯 Choisissez votre niveau :</label>
+              <div class="grid grid-cols-1 gap-1.5 text-xs">
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s3-level" value="debutant" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Débutant :</span> <span class="text-gray-600">60 squats (5 x 12) / 30" pont statique</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s3-level" value="intermediaire" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Intermédiaire :</span> <span class="text-gray-600">80 squats (5 x 16) / 45" pont statique</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s3-level" value="confirme" checked class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Confirmé :</span> <span class="text-gray-600">100 squats (5 x 20) / 1' pont statique</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s3-level" value="expert" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Expert :</span> <span class="text-gray-600">120 squats (5 x 24) / 1' pont statique</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s3-level" value="champion" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Champion :</span> <span class="text-gray-600">150 squats (5 x 30) / 1' pont statique</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS3Ex1Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s3-ex1-workout" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Squats & Pont Statique</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Mouvement : Squats & Pont Statique</p>
+        </div>
+
+        <div class="my-auto py-2 space-y-3">
+          <div id="s3-ex1-box" class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s3-ex1-status-title" class="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Série 1 / 5</span>
+            <span id="s3-ex1-counter-display" class="font-display font-black text-5xl tracking-tight text-brand-700 block">Faire 20 Squats</span>
+            <span id="s3-ex1-subtext" class="text-xs font-bold text-gray-400 block mt-1">Squats en cours</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="s3-ex1-main-btn" onclick="handleS3Ex1MainAction()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s3-ex2-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Pompes, objectif +20%</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-100 space-y-3 text-gray-700 text-xs">
+            <div class="flex items-center gap-2 text-brand-700 font-bold text-sm"><span>Consigne :</span></div>
+            <p class="leading-relaxed">
+              Saisissez le nombre de pompes réalisées lors de la séance <strong>FRC2 - GRIMPER DES MONTAGNES</strong>. L'application calculera votre objectif augmenté de 20%, réparti équitablement en 5 séries entrecoupées de 30" de repos.
+            </p>
+
+            <div class="p-3 bg-white rounded-xl border border-gray-200 space-y-2">
+              <label class="block text-xs font-bold text-gray-700">Total Pompes FRC2 :</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="s3-pompes-base-input" value="" placeholder="Ex: 40" class="w-28 px-3 py-1.5 rounded-lg border border-gray-300 font-bold text-sm focus:ring-2 focus:ring-brand-500 outline-none" oninput="updateS3PompesTarget()">
+                <span class="text-xs font-bold text-brand-700">+20% = <span id="s3-pompes-target-display" class="text-base text-emerald-600 font-black">0</span> pompes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS3Ex2Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s3-ex2-workout" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 2</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Pompes (+20%)</h2>
+          <p class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Mouvement : Pompes en 5 séries</p>
+        </div>
+
+        <div class="my-auto py-2 space-y-3">
+          <div id="s3-ex2-box" class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s3-ex2-status-title" class="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Série 1 / 5</span>
+            <span id="s3-ex2-counter-display" class="font-display font-black text-5xl tracking-tight text-brand-700 block">Faire 10 Pompes</span>
+            <span id="s3-ex2-subtext" class="text-xs font-bold text-gray-400 block mt-1">Pompes en cours</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="s3-ex2-main-btn" onclick="handleS3Ex2MainAction()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           FRC4 - LE TOUR DU MONDE DU GAINAGE
+           =================================================================== -->
+      <section id="screen-s4-ex1-intro" class="hidden flex-1 flex flex-col justify-between py-2 space-y-4">
+        <div class="space-y-4">
+          <button onclick="showScreen('screen-dashboard')" class="text-xs font-bold text-gray-400 hover:text-gray-700 flex items-center gap-1">
+            ← Retour au catalogue des séances
+          </button>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-extrabold text-[10px]">Difficulté : 2/4</span>
+            </div>
+            <p class="text-2xl font-display font-extrabold text-gray-900 leading-tight">Objectif 5 Postures, 3 tours, 15'</p>
+          </div>
+
+          <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-100 space-y-3 text-gray-700 text-xs">
+            <div class="flex items-center gap-2 text-brand-700 font-bold text-sm"><span>Consigne :</span></div>
+            <p class="leading-relaxed">
+              Tenez successivement les 5 postures suivantes : Planche, Chaise, Pont statique, Gainage latéral gauche, Gainage latéral droit sur 3 tours complets.
+            </p>
+
+            <!-- CHOIX DU NIVEAU SÉANCE 4 -->
+            <div class="p-3 bg-white rounded-xl border border-blue-200 text-gray-800 space-y-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-brand-700">🎯 Choisissez votre niveau :</label>
+              <div class="grid grid-cols-1 gap-1.5 text-xs">
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s4-level" value="debutant" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Débutant :</span> <span class="text-gray-600">30" d'exercice / 30" de récup</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s4-level" value="intermediaire" class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Intermédiaire :</span> <span class="text-gray-600">40" d'exercice / 20" de récup</span>
+                  </div>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-blue-50">
+                  <input type="radio" name="s4-level" value="confirme" checked class="accent-brand-600">
+                  <div>
+                    <span class="font-bold text-gray-900">Confirmé :</span> <span class="text-gray-600">50" d'exercice / 10" de récup</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="startS4Ex1Screen()" class="w-full py-4 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-600/30 active:scale-95 transition-all">
+            Lancer l'exercice
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-s4-ex1-workout" class="hidden flex-1 flex flex-col justify-between py-2 text-center">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Exercice 1</span>
+          <h2 class="text-xl font-display font-black text-gray-900 mt-0.5">Le Tour du Monde du Gainage</h2>
+          <p id="s4-ex1-round-indicator" class="text-xs font-bold text-blue-600 mt-1 uppercase tracking-wide">Tour 1 / 3 • Série 1 / 15</p>
+        </div>
+
+        <div class="my-auto py-2 space-y-3">
+          <div id="s4-ex1-box" class="p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner">
+            <span id="s4-ex1-status-title" class="text-xs font-black uppercase tracking-widest text-gray-500 block mb-1">Posture</span>
+            <span id="s4-ex1-posture-display" class="font-display font-black text-4xl tracking-tight text-brand-700 block my-1">Planche</span>
+            <span id="s4-ex1-subtext" class="text-xs font-bold text-gray-400 block mb-2">Prêt</span>
+            <span id="s4-ex1-timer-display" class="font-display font-black text-5xl tracking-tight text-gray-900 block">00:50</span>
+          </div>
+        </div>
+
+        <div>
+          <button id="s4-ex1-main-btn" onclick="handleS4Ex1MainAction()" class="w-full py-5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-600/30 active:scale-95 transition-all uppercase tracking-wide">
+            C'est parti
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= ÉCRAN DE VICTOIRE ================= -->
+      <section id="screen-victory" class="hidden flex-1 flex flex-col justify-between py-4 text-center">
+        <div class="my-auto space-y-5">
+          <div class="inline-flex p-5 bg-yellow-100 text-yellow-600 rounded-full text-5xl shadow-inner animate-bounce">
+            🏆
+          </div>
+
+          <div class="space-y-1">
+            <h1 class="text-3xl font-display font-black text-brand-600 uppercase tracking-tight">Fin de la séance</h1>
+            <p class="text-2xl font-black text-gray-900 uppercase">Félicitations !</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-blue-50 border border-blue-100 text-sm text-gray-700 space-y-2 text-left">
+            <p id="victory-session-title" class="font-bold text-brand-700 text-center text-base"></p>
+            <div id="victory-details-container" class="text-xs space-y-1.5 pt-1"></div>
+          </div>
+        </div>
+
+        <div>
+          <button onclick="showScreen('screen-dashboard')" class="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-600/30 active:scale-95 transition-all">
+            Retour aux séances
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER PERMANENT -->
+    <footer id="app-footer" class="py-3 px-6 bg-gray-50 border-t border-gray-100 text-center text-xs font-bold text-gray-500 shrink-0 uppercase tracking-wider">
+      COACHING RENFORCEMENT MUSCULAIRE
+    </footer>
+  </div>
+
+  <script>
+    /* ===================================================================
+       1. DONNÉES DES SÉANCES DU PROGRAMME
+       =================================================================== */
+    const WORKOUTS_DATA = [
+      {
+        id: 8,
+        title: "FRC8 - OURS MAL LÉCHÉ",
+        shortTitle: "FRC8 - OURS MAL LÉCHÉ",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 2,
+        focus: "FULL BODY",
+        durationText: "15-20 min environ",
+        exercisesSummary: "15 x 1/3 du Temps de soutien Test Day (Planche, Chaise, Ours, Araignée, Pont statique x 3)"
+      },
+      {
+        id: 7,
+        title: "FRC7 - ABCD COMME B.A.-BA",
+        shortTitle: "FRC7 - ABCD COMME B.A.-BA",
+        collection: "GAMMES",
+        difficulty: 1,
+        focus: "BAS DU CORPS",
+        durationText: "10 min environ",
+        exercisesSummary: "4 Exercices de Gammes (Montées de genoux, Jambes tendues, Foulées bondissantes, Talons-fesses) - 3 passages"
+      },
+      {
+        id: 1,
+        title: "FRC1 - LE VOYAGE DE 1000 LIEUES",
+        shortTitle: "FRC1 - LE VOYAGE DE 1000 LIEUES",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 2,
+        focus: "ABDOMINAUX",
+        durationText: "8 min 50",
+        exercisesSummary: "5' Gainage + Tabata Abdominaux (15 phases, 3'50)"
+      },
+      {
+        id: 2,
+        title: "FRC2 - GRIMPER DES MONTAGNES",
+        shortTitle: "FRC2 - GRIMPER DES MONTAGNES",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 3,
+        focus: "HAUT DU CORPS",
+        durationText: "12 min",
+        exercisesSummary: "200 Mountain Climbers + 3 Séries de Pompes à l'échec"
+      },
+      {
+        id: 3,
+        title: "FRC3 - LE PONT COMME RÉCUPÉRATION",
+        shortTitle: "FRC3 - LE PONT COMME RÉCUPÉRATION",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 3,
+        focus: "FULL BODY",
+        durationText: "14 min",
+        exercisesSummary: "Squats & Pont statique + Pompes (+20%)"
+      },
+      {
+        id: 4,
+        title: "FRC4 - LE TOUR DU MONDE DU GAINAGE",
+        shortTitle: "FRC4 - LE TOUR DU MONDE DU GAINAGE",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 2,
+        focus: "FULL BODY",
+        durationText: "15 min",
+        exercisesSummary: "5 Postures (Planche, Chaise, Pont, Côté G, Côté D) x 3 tours"
+      },
+      {
+        id: 5,
+        title: "FRC5 - TEST DAY N° 1",
+        shortTitle: "FRC5 - TEST DAY N° 1",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 4,
+        focus: "TEST EVALUATION",
+        durationText: "12 min environ",
+        exercisesSummary: "Test Planche Max + Test 2' Jump Squats + Test 2' Pompes"
+      },
+      {
+        id: 6,
+        title: "FRC6 - LES ABOMINABLES ABDOMINAUX",
+        shortTitle: "FRC6 - LES ABOMINABLES ABDOMINAUX",
+        collection: "FITRUN CHALLENGE",
+        difficulty: 3,
+        focus: "ABDOMINAUX",
+        durationText: "15 min 30",
+        exercisesSummary: "3 Tabatas Abdominaux (Élévation jambes, Crunch/Sit-up, Mountain climbers)"
+      }
+    ];
+
+    /* ===================================================================
+       2. NAVIGATION ENTRE ÉCRANS
+       =================================================================== */
+    function showScreen(screenId) {
+      const screens = [
+        'screen-dashboard', 'screen-victory',
+        'screen-s1-intro', 'screen-s1-ex1-timer', 'screen-s1-ex2-intro', 'screen-s1-ex2-timer',
+        'screen-s2-ex1-intro', 'screen-s2-ex1-workout', 'screen-s2-ex2-intro', 'screen-s2-ex2-workout',
+        'screen-s3-ex1-intro', 'screen-s3-ex1-workout', 'screen-s3-ex2-intro', 'screen-s3-ex2-workout',
+        'screen-s4-ex1-intro', 'screen-s4-ex1-workout',
+        'screen-s5-intro', 'screen-s5-runner',
+        'screen-s6-intro', 'screen-s6-runner',
+        'screen-s7-intro', 'screen-s7-runner',
+        'screen-s8-intro', 'screen-s8-runner'
+      ];
+
+      screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+
+      const active = document.getElementById(screenId);
+      if (active) active.classList.remove('hidden');
+
+      if (screenId === 'screen-dashboard') {
+        renderDashboard();
+      }
+    }
+
+    function showVictory(workoutId, detailsHtml) {
+      const workout = WORKOUTS_DATA.find(w => w.id === workoutId);
+      document.getElementById('victory-session-title').textContent = workout ? workout.title : "Séance achevée";
+      document.getElementById('victory-details-container').innerHTML = detailsHtml;
+
+      showScreen('screen-victory');
+    }
+
+    /* ===================================================================
+       3. AUDIO API (Web Audio Synth)
+       =================================================================== */
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playBeep(freq = 600, duration = 0.15) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playIntermediaryGongSound() {
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        [220, 330, 440].forEach(freq => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 1.2);
+        });
+      } catch(e){}
+    }
+
+    function playFinalGongSound() {
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        [130, 195, 260, 390].forEach(freq => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.5, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 3.2);
+        });
+      } catch(e){}
+    }
+
+    /* ===================================================================
+       4. GESTION DES FILTRES & AFFICHAGE DU CATALOGUE
+       =================================================================== */
+    let currentCollectionFilter = 'ALL';
+    let currentDifficultyFilter = 'ALL';
+    let currentFocusFilter = 'ALL';
+
+    function filterCollection(col) {
+      currentCollectionFilter = col;
+      updateFilterButtonsUI();
+      renderWorkoutsList();
+    }
+
+    function filterDifficulty(diff) {
+      currentDifficultyFilter = diff;
+      updateFilterButtonsUI();
+      renderWorkoutsList();
+    }
+
+    function filterFocus(f) {
+      currentFocusFilter = f;
+      updateFilterButtonsUI();
+      renderWorkoutsList();
+    }
+
+    function resetFilters() {
+      currentCollectionFilter = 'ALL';
+      currentDifficultyFilter = 'ALL';
+      currentFocusFilter = 'ALL';
+      updateFilterButtonsUI();
+      renderWorkoutsList();
+    }
+
+    function updateFilterButtonsUI() {
+      document.getElementById('filter-col-all').className = currentCollectionFilter === 'ALL' 
+        ? "px-3 py-1.5 rounded-xl font-bold bg-brand-600 text-white shrink-0 shadow-xs"
+        : "px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0";
+
+      document.getElementById('filter-col-fitrun').className = currentCollectionFilter === 'FITRUN CHALLENGE' 
+        ? "px-3 py-1.5 rounded-xl font-bold bg-brand-600 text-white shrink-0 shadow-xs"
+        : "px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0";
+
+      document.getElementById('filter-col-gammes').className = currentCollectionFilter === 'GAMMES' 
+        ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shrink-0 shadow-xs"
+        : "px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0";
+
+      const diffs = ['all', '1', '2', '3', '4'];
+      diffs.forEach(d => {
+        const btn = document.getElementById(`filter-diff-${d}`);
+        const isActive = (d === 'all' && currentDifficultyFilter === 'ALL') || (d === String(currentDifficultyFilter));
+        if (isActive) {
+          btn.className = d === 'all' ? "px-3 py-1.5 rounded-xl font-bold bg-gray-900 text-white shrink-0"
+                       : d === '1' ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shrink-0"
+                       : d === '2' ? "px-3 py-1.5 rounded-xl font-bold bg-blue-600 text-white shrink-0"
+                       : d === '3' ? "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shrink-0"
+                       : "px-3 py-1.5 rounded-xl font-bold bg-black text-white shrink-0";
+        } else {
+          btn.className = d === 'all' ? "px-3 py-1.5 rounded-xl font-bold bg-white text-gray-700 border border-gray-200 shrink-0"
+                       : d === '1' ? "px-3 py-1.5 rounded-xl font-bold bg-white text-emerald-700 border border-emerald-200 shrink-0"
+                       : d === '2' ? "px-3 py-1.5 rounded-xl font-bold bg-white text-blue-700 border border-blue-200 shrink-0"
+                       : d === '3' ? "px-3 py-1.5 rounded-xl font-bold bg-white text-rose-700 border border-rose-200 shrink-0"
+                       : "px-3 py-1.5 rounded-xl font-bold bg-white text-gray-900 border border-gray-300 shrink-0";
+        }
+      });
+
+      const focusMap = {
+        'ALL': 'filter-focus-all',
+        'ABDOMINAUX': 'filter-focus-abs',
+        'BAS DU CORPS': 'filter-focus-bas',
+        'HAUT DU CORPS': 'filter-focus-haut',
+        'FULL BODY': 'filter-focus-full',
+        'TEST EVALUATION': 'filter-focus-test'
+      };
+
+      Object.keys(focusMap).forEach(key => {
+        const btn = document.getElementById(focusMap[key]);
+        if (!btn) return;
+        if (currentFocusFilter === key) {
+          btn.className = "px-3 py-1 rounded-lg font-bold bg-gray-900 text-white shrink-0 shadow-xs";
+        } else {
+          btn.className = "px-3 py-1 rounded-lg font-semibold bg-white text-gray-600 border border-gray-200 shrink-0";
+        }
+      });
+    }
+
+    function renderDashboard() {
+      document.getElementById('app-footer').textContent = "COACHING RENFORCEMENT MUSCULAIRE";
+      document.getElementById('header-title').textContent = "FIT1000 • FITRUN CHALLENGE";
+      updateFilterButtonsUI();
+      renderWorkoutsList();
+    }
+
+    function renderWorkoutsList() {
+      const container = document.getElementById('workouts-list-container');
+      container.innerHTML = '';
+
+      const filtered = WORKOUTS_DATA.filter(w => {
+        const matchCol = (currentCollectionFilter === 'ALL') || (w.collection === currentCollectionFilter);
+        const matchDiff = (currentDifficultyFilter === 'ALL') || (w.difficulty === currentDifficultyFilter);
+        const matchFocus = (currentFocusFilter === 'ALL') || (w.focus === currentFocusFilter);
+        return matchCol && matchDiff && matchFocus;
+      });
+
+      document.getElementById('workout-count-badge').textContent = `${filtered.length} séance${filtered.length > 1 ? 's' : ''}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-gray-50 rounded-2xl border border-gray-200 space-y-3">
+            <p class="text-2xl">🔍</p>
+            <p class="text-sm font-bold text-gray-700">Aucune séance ne correspond à vos filtres.</p>
+            <button onclick="resetFilters()" class="px-4 py-2 bg-brand-600 text-white text-xs font-bold rounded-xl">
+              Réinitialiser les filtres
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(w => {
+        let diffColor = 'bg-blue-600';
+        let diffLabel = '2/4 • Moyen';
+        if (w.difficulty === 1) {
+          diffColor = 'bg-emerald-500';
+          diffLabel = '1/4 • Pastille Verte';
+        } else if (w.difficulty === 3) {
+          diffColor = 'bg-rose-600';
+          diffLabel = '3/4 • Difficile';
+        } else if (w.difficulty === 4) {
+          diffColor = 'bg-black';
+          diffLabel = '4/4 • Extrême';
+        }
+
+        const card = document.createElement('div');
+        card.className = "p-4 rounded-2xl bg-white border border-gray-200/90 shadow-xs hover:shadow-md transition-all space-y-3";
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5 mb-1 flex-wrap">
+                <span class="w-2.5 h-2.5 rounded-full ${diffColor} inline-block"></span>
+                <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">${diffLabel}</span>
+                <span class="text-gray-300">•</span>
+                <span class="text-[11px] font-bold text-brand-600 uppercase tracking-wider">${w.focus}</span>
+              </div>
+              <h3 class="font-display font-extrabold ${w.difficulty === 1 ? 'text-emerald-600' : w.difficulty === 4 ? 'text-black font-black' : 'text-gray-900'} text-base leading-snug">${w.title}</h3>
+            </div>
+            <span class="shrink-0 px-2 py-0.5 rounded-md bg-blue-50 text-brand-700 text-[10px] font-extrabold border border-blue-100">
+              ${w.collection}
+            </span>
+          </div>
+          <p class="text-xs text-gray-500">${w.exercisesSummary}</p>
+          <div class="flex items-center justify-between pt-1 border-t border-gray-100">
+            <span class="text-xs font-semibold text-gray-400">⏱️ ${w.durationText}</span>
+            <button onclick="launchWorkout(${w.id})" class="py-2 px-4 ${w.difficulty === 1 ? 'bg-emerald-600 hover:bg-emerald-700' : w.difficulty === 4 ? 'bg-black hover:bg-gray-800' : 'bg-brand-600 hover:bg-brand-700'} text-white font-bold text-xs rounded-xl shadow-xs active:scale-95 transition-all">
+              Lancer la séance ▶
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function launchWorkout(id) {
+      if (id === 8) {
+        document.getElementById('header-title').textContent = "FRC8 - OURS MAL LÉCHÉ";
+        document.getElementById('app-footer').textContent = "Focus FULL BODY";
+        showScreen('screen-s8-intro');
+      } else if (id === 7) {
+        document.getElementById('header-title').textContent = "FRC7 - ABCD COMME B.A.-BA";
+        document.getElementById('app-footer').textContent = "Focus BAS DU CORPS";
+        showScreen('screen-s7-intro');
+      } else if (id === 1) {
+        document.getElementById('header-title').textContent = "FRC1 - LE VOYAGE DE 1000 LIEUES";
+        document.getElementById('app-footer').textContent = "Focus ABDOMINAUX";
+        showScreen('screen-s1-intro');
+      } else if (id === 2) {
+        document.getElementById('header-title').textContent = "FRC2 - GRIMPER DES MONTAGNES";
+        document.getElementById('app-footer').textContent = "Focus HAUT DU CORPS";
+        showScreen('screen-s2-ex1-intro');
+      } else if (id === 3) {
+        document.getElementById('header-title').textContent = "FRC3 - LE PONT COMME RÉCUPÉRATION";
+        document.getElementById('app-footer').textContent = "Focus FULL BODY";
+        showScreen('screen-s3-ex1-intro');
+      } else if (id === 4) {
+        document.getElementById('header-title').textContent = "FRC4 - LE TOUR DU MONDE DU GAINAGE";
+        document.getElementById('app-footer').textContent = "Focus FULL BODY";
+        showScreen('screen-s4-ex1-intro');
+      } else if (id === 5) {
+        document.getElementById('header-title').textContent = "FRC5 - TEST DAY N° 1";
+        document.getElementById('app-footer').textContent = "Focus TEST EVALUATION";
+        showScreen('screen-s5-intro');
+      } else if (id === 6) {
+        document.getElementById('header-title').textContent = "FRC6 - LES ABOMINABLES ABDOMINAUX";
+        document.getElementById('app-footer').textContent = "Focus ABDOMINAUX";
+        showScreen('screen-s6-intro');
+      }
+    }
+
+
+    /* ===================================================================
+       5. LOGIQUE FRC8 - OURS MAL LÉCHÉ
+       =================================================================== */
+    const S8_EXERCISES = [
+      {
+        name: "Planche",
+        consigne: "<strong>Planche :</strong> Position classique en appui sur les avant-bras et la pointe des pieds, corps bien aligné sans cambrer le dos."
+      },
+      {
+        name: "Chaise",
+        consigne: "<strong>Chaise :</strong> Dos plaqué au mur, cuisses à 90° parallèles au sol, mains le long du corps ou sur la poitrine."
+      },
+      {
+        name: "Ours",
+        consigne: "<strong>Ours :</strong> À 4 pattes en appui sur la pointe des pieds (pas sur les genoux), mains au sol sous les épaules, genoux sous le bassin et tibias parallèles au sol."
+      },
+      {
+        name: "Araignée",
+        consigne: "<strong>Araignée :</strong> Position de la planche mais en appui sur les mains (bras tendus sous les épaules) et pas sur les avant-bras."
+      },
+      {
+        name: "Pont statique",
+        consigne: "<strong>Pont statique :</strong> Allongé sur le dos, pieds à plat au sol, bassin décollé vers le haut, fessiers et ischio-jambiers contractés."
+      }
+    ];
+
+    let s8PassageIndex = 0; // 0 à 14 (15 passages)
+    let s8IsWorkPhase = true; // true = exercice, false = récup
+    let s8WorkDuration = 46;
+    let s8RestDuration = 23;
+    let s8TimeLeft = 46;
+    let s8TimerInterval = null;
+    let s8IsPaused = false;
+    let s8IsFinished = false;
+
+    function parsePlankTime(str) {
+      if (!str) return 143;
+      let m = 0, s = 0;
+      const cleanStr = str.trim().replace('"', '');
+      if (cleanStr.includes("'") || cleanStr.includes(":")) {
+        const parts = cleanStr.split(/[':]/);
+        m = parseInt(parts[0]) || 0;
+        s = parseInt(parts[1]) || 0;
+      } else {
+        s = parseInt(cleanStr) || 0;
+      }
+      return m * 60 + s;
+    }
+
+    function updateS8CalculatedTimes() {
+      const inputEl = document.getElementById('s8-plank-input');
+      if (!inputEl) return;
+      const inputVal = inputEl.value;
+      const totalSec = parsePlankTime(inputVal);
+
+      let work = Math.floor(totalSec / 3);
+      if (inputVal.trim() === "2'23" || inputVal.trim() === "2'23\"") {
+        work = 46;
+      }
+      let rest = Math.round(work * 0.5);
+
+      s8WorkDuration = Math.max(1, work);
+      s8RestDuration = Math.max(1, rest);
+
+      document.getElementById('s8-work-time-display').textContent = `${s8WorkDuration}"`;
+      document.getElementById('s8-rest-time-display').textContent = `${s8RestDuration}"`;
+    }
+
+    function startS8WorkoutFlow() {
+      updateS8CalculatedTimes();
+      showScreen('screen-s8-runner');
+
+      s8PassageIndex = 0;
+      s8IsWorkPhase = true;
+      s8TimeLeft = s8WorkDuration;
+      s8IsPaused = false;
+      s8IsFinished = false;
+
+      setupS8UI();
+      startS8Timer();
+    }
+
+    function setupS8UI() {
+      const badge = document.getElementById('s8-phase-badge');
+      const title = document.getElementById('s8-exercise-title');
+      const consigneText = document.getElementById('s8-consigne-text');
+      const box = document.getElementById('s8-timer-box');
+      const stateLabel = document.getElementById('s8-state-label');
+      const timerDisplay = document.getElementById('s8-timer-display');
+      const subtextDisplay = document.getElementById('s8-subtext-display');
+      const mainBtn = document.getElementById('s8-action-btn');
+
+      const currentExIndex = s8PassageIndex % 5;
+      const currentEx = S8_EXERCISES[currentExIndex];
+      const passageNum = s8PassageIndex + 1;
+
+      if (s8IsFinished) {
+        badge.textContent = "Passage 15 / 15 • Terminé";
+        title.textContent = "Séance accomplie !";
+        consigneText.innerHTML = "Cliquez ci-dessous pour valider votre séance et consulter votre bilan.";
+
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-600 inline-block w-full max-w-xs shadow-lg transition-all";
+        stateLabel.className = "text-xs font-black uppercase tracking-widest text-emerald-700 block mb-1";
+        stateLabel.textContent = "🏆 BRAVO !";
+        timerDisplay.className = "font-display font-black text-4xl tracking-tight text-emerald-700 block my-2";
+        timerDisplay.textContent = "TERMINÉ !";
+        subtextDisplay.textContent = "15 passages effectués avec succès";
+
+        mainBtn.textContent = "Valider ma séance";
+        mainBtn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+        return;
+      }
+
+      const m = Math.floor(s8TimeLeft / 60);
+      const s = s8TimeLeft % 60;
+      const timeFormatted = m > 0 ? `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${String(s).padStart(2,'0')}"`;
+
+      if (s8IsWorkPhase) {
+        badge.textContent = `Passage ${passageNum} / 15 • Exercice`;
+        title.textContent = currentEx.name;
+        consigneText.innerHTML = currentEx.consigne;
+
+        box.className = "p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        stateLabel.className = "text-xs font-black uppercase tracking-widest text-red-600 block mb-1";
+        stateLabel.textContent = "🔥 EXERCICE";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-red-600 block";
+        timerDisplay.textContent = timeFormatted;
+        subtextDisplay.textContent = "Maintien de la posture";
+
+        mainBtn.textContent = s8IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      } else {
+        const nextExIndex = (s8PassageIndex + 1) % 5;
+        const nextEx = S8_EXERCISES[nextExIndex];
+
+        badge.textContent = `Passage ${passageNum} / 15 • Récupération`;
+        title.textContent = "Récupération";
+        consigneText.innerHTML = `<span class="text-emerald-700 font-bold block mb-1">⏱️ Préparez-vous pour l'exercice suivant :</span><strong>${nextEx.name}</strong>`;
+
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        stateLabel.className = "text-xs font-black uppercase tracking-widest text-emerald-600 block mb-1";
+        stateLabel.textContent = "🍃 RÉCUPÉRATION";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-emerald-600 block";
+        timerDisplay.textContent = timeFormatted;
+        subtextDisplay.textContent = `Prochain : ${nextEx.name}`;
+
+        mainBtn.textContent = s8IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+    }
+
+    function startS8Timer() {
+      clearInterval(s8TimerInterval);
+      s8TimerInterval = setInterval(() => {
+        if (s8IsPaused || s8IsFinished) return;
+
+        if ([3, 2, 1].includes(s8TimeLeft)) {
+          playBeep(700, 0.15);
+        }
+
+        s8TimeLeft--;
+        setupS8UI();
+
+        if (s8TimeLeft <= 0) {
+          if (s8IsWorkPhase) {
+            if (s8PassageIndex === 14) { // Fin du passage 15
+              clearInterval(s8TimerInterval);
+              playFinalGongSound();
+              s8IsFinished = true;
+              setupS8UI();
+              return;
+            } else {
+              playIntermediaryGongSound();
+              s8IsWorkPhase = false;
+              s8TimeLeft = s8RestDuration;
+              setupS8UI();
+            }
+          } else {
+            playIntermediaryGongSound();
+            s8PassageIndex++;
+            s8IsWorkPhase = true;
+            s8TimeLeft = s8WorkDuration;
+            setupS8UI();
+          }
+        }
+      }, 1000);
+    }
+
+    function handleS8Action() {
+      initAudio();
+
+      if (s8IsFinished) {
+        finishS8Workout();
+        return;
+      }
+
+      s8IsPaused = !s8IsPaused;
+      document.getElementById('s8-action-btn').textContent = s8IsPaused ? "Continuer" : "Pause";
+    }
+
+    function formatSecToMinSec(totalSec) {
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      if (m === 0) return `${s}"`;
+      return `${m}'${String(s).padStart(2, '0')}"`;
+    }
+
+    function finishS8Workout() {
+      const gainageSec = s8WorkDuration * 6; // 3 x Planche + 3 x Araignée
+      const oursSec = s8WorkDuration * 3;
+      const chaiseSec = s8WorkDuration * 3;
+      const pontSec = s8WorkDuration * 3;
+
+      showVictory(
+        8,
+        `<div class="space-y-2 text-left">
+           <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 text-xs font-semibold space-y-1.5">
+             <p class="font-extrabold text-blue-800 border-b border-blue-200 pb-1 uppercase tracking-wider">
+               📊 Récapitulatif de votre séance (15 passages)
+             </p>
+             <ul class="space-y-1.5 text-gray-800">
+               <li>• <strong>${formatSecToMinSec(gainageSec)}</strong> de Gainage <span class="text-gray-500 font-normal">(cumul Planche + Araignée)</span></li>
+               <li>• <strong>${formatSecToMinSec(oursSec)}</strong> de posture de l'Ours</li>
+               <li>• <strong>${formatSecToMinSec(chaiseSec)}</strong> de Chaise</li>
+               <li>• <strong>${formatSecToMinSec(pontSec)}</strong> de Pont statique</li>
+             </ul>
+           </div>
+         </div>`
+      );
+    }
+
+
+    /* ===================================================================
+       6. LOGIQUE FRC7 - ABCD COMME B.A.-BA
+       =================================================================== */
+    const S7_GAMMES = [
+      {
+        letter: 'A',
+        name: 'Montée de Genoux',
+        consigne: 'Faire 2 répétitions de Montée de Genoux',
+        sub: 'Retour tranquille'
+      },
+      {
+        letter: 'B',
+        name: 'Jambes tendues',
+        consigne: 'Faire 2 répétitions de Jambes tendues',
+        sub: 'Retour tranquille'
+      },
+      {
+        letter: 'C',
+        name: 'Foulées bondissantes',
+        consigne: 'Faire 2 répétitions de Foulées bondissantes',
+        sub: 'Retour tranquille'
+      },
+      {
+        letter: 'D',
+        name: 'Talons-fesses',
+        consigne: 'Faire 2 répétitions de Talons-fesses',
+        sub: 'Retour tranquille'
+      }
+    ];
+
+    let s7CurrentPassage = 1;
+    let s7CurrentIndex = 0;
+
+    function startS7WorkoutFlow() {
+      s7CurrentPassage = 1;
+      s7CurrentIndex = 0;
+      showScreen('screen-s7-runner');
+      setupS7UI();
+    }
+
+    function setupS7UI() {
+      const gamme = S7_GAMMES[s7CurrentIndex];
+      document.getElementById('s7-gamme-badge').textContent = `Passage ${s7CurrentPassage} / 3 • Gamme ${gamme.letter}`;
+      document.getElementById('s7-gamme-title').textContent = `Écran Gamme ${gamme.letter}`;
+      document.getElementById('s7-consigne-main').textContent = gamme.consigne;
+      document.getElementById('s7-consigne-sub').textContent = gamme.sub;
+
+      const btn = document.getElementById('s7-action-btn');
+      const isLastStep = (s7CurrentPassage === 3 && s7CurrentIndex === 3);
+
+      if (isLastStep) {
+        btn.textContent = "Valider ma séance";
+      } else {
+        btn.textContent = "Passer à l'étape suivante";
+      }
+    }
+
+    function handleS7Action() {
+      initAudio();
+      playIntermediaryGongSound();
+
+      if (s7CurrentPassage === 3 && s7CurrentIndex === 3) {
+        finishS7Workout();
+        return;
+      }
+
+      s7CurrentIndex++;
+      if (s7CurrentIndex > 3) {
+        s7CurrentIndex = 0;
+        s7CurrentPassage++;
+      }
+      setupS7UI();
+    }
+
+    function finishS7Workout() {
+      playFinalGongSound();
+      showVictory(
+        7,
+        `<div class="text-center py-2 space-y-3">
+           <p class="text-2xl font-display font-black text-emerald-600 uppercase tracking-tight">
+             Vous êtes un coureur haut de GAMME
+           </p>
+           <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-xs font-medium text-left leading-relaxed">
+             • <strong>3 passages complets</strong> effectués (A - A - B - B - C - C - D - D)<br>
+             • <strong>6 répétitions</strong> de Montée de Genoux<br>
+             • <strong>6 répétitions</strong> de Jambes tendues<br>
+             • <strong>6 répétitions</strong> de Foulées bondissantes<br>
+             • <strong>6 répétitions</strong> de Talons-fesses
+           </div>
+         </div>`
+      );
+    }
+
+
+    /* ===================================================================
+       7. LOGIQUE COMMUNE TABATA (3'50 - 15 PHASES 20"/10")
+       =================================================================== */
+    function getTabataPhaseInfo(t) {
+      const elapsed = 230 - t;
+      const cycle = elapsed % 30;
+      const index = Math.floor(elapsed / 30);
+
+      if (cycle < 20) {
+        return {
+          phaseNum: Math.min(15, index * 2 + 1),
+          isWork: true,
+          left: 20 - cycle
+        };
+      } else {
+        return {
+          phaseNum: Math.min(15, index * 2 + 2),
+          isWork: false,
+          left: 30 - cycle
+        };
+      }
+    }
+
+
+    /* ===================================================================
+       8. FRC6 LOGIQUE - LES ABOMINABLES ABDOMINAUX
+       =================================================================== */
+    const S6_EXERCISES = [
+      {
+        num: 1,
+        title: "Élévation jambes 4 temps",
+        consigne: "<strong>Consigne :</strong> Allongé sur le dos les jambes tendues au sol, ramener la jambe gauche, puis la droite avant de ramener la gauche puis la droite vers le sol. Vous n'êtes pas obligé de ramener les jambes au ras du sol pour faire travailler les abdos. Bien maintenir le dos collé au sol."
+      },
+      {
+        num: 2,
+        title: "Crunch, Sit-up ou Crunch foot to foot",
+        consigne: "<strong>Consigne :</strong> Au choix vous pouvez mixer 2 ou les 3 exercices ou ne faire qu'un seul de ces 3 exercices durant votre Tabata."
+      },
+      {
+        num: 3,
+        title: "Mountain climbers",
+        consigne: "<strong>Consigne :</strong> Mountain climbers en mode Tabata."
+      }
+    ];
+
+    let s6CurrentStep = 1; 
+    let s6TabataTimeLeft = 230; 
+    let s6RestTimeLeft = 120; 
+    let s6TimerInterval = null;
+    let s6IsPaused = false;
+
+    function startS6WorkoutFlow() {
+      showScreen('screen-s6-runner');
+      clearInterval(s6TimerInterval);
+
+      s6CurrentStep = 1;
+      s6TabataTimeLeft = 230;
+      s6RestTimeLeft = 120;
+      s6IsPaused = false;
+
+      setupS6UI();
+      startS6Interval();
+    }
+
+    function setupS6UI() {
+      const badge = document.getElementById('s6-exercise-badge');
+      const title = document.getElementById('s6-exercise-title');
+      const consigneText = document.getElementById('s6-exercise-consigne-text');
+      const box = document.getElementById('s6-timer-box');
+      const stateLabel = document.getElementById('s6-tabata-state-label');
+      const timerDisplay = document.getElementById('s6-timer-display');
+      const phaseBadge = document.getElementById('s6-tabata-phase-badge');
+      const intervalDisplay = document.getElementById('s6-tabata-interval-display');
+      const mainBtn = document.getElementById('s6-action-btn');
+      const skipRestBtn = document.getElementById('s6-skip-rest-btn');
+
+      skipRestBtn.classList.add('hidden');
+
+      if (s6CurrentStep === 1 || s6CurrentStep === 3 || s6CurrentStep === 5) {
+        const exIndex = s6CurrentStep === 1 ? 0 : s6CurrentStep === 3 ? 1 : 2;
+        const exObj = S6_EXERCISES[exIndex];
+
+        badge.textContent = `Tabata ${exObj.num} / 3 • Exercice ${exObj.num}`;
+        title.textContent = exObj.title;
+        consigneText.innerHTML = exObj.consigne;
+
+        const info = getTabataPhaseInfo(s6TabataTimeLeft);
+        const m = Math.floor(s6TabataTimeLeft / 60);
+        const s = s6TabataTimeLeft % 60;
+        timerDisplay.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        phaseBadge.textContent = `Phase ${info.phaseNum} / 15`;
+        intervalDisplay.textContent = `Reste phase : ${info.left}s`;
+
+        if (info.isWork) {
+          box.className = "p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all";
+          stateLabel.className = "text-xs font-black uppercase tracking-widest text-red-600 block mb-1";
+          stateLabel.textContent = "🔥 TRAVAIL";
+          timerDisplay.className = "font-display font-black text-6xl tracking-tight text-red-600 block";
+        } else {
+          box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+          stateLabel.className = "text-xs font-black uppercase tracking-widest text-emerald-600 block mb-1";
+          stateLabel.textContent = "🍃 REPOS";
+          timerDisplay.className = "font-display font-black text-6xl tracking-tight text-emerald-600 block";
+        }
+
+        mainBtn.textContent = s6IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-rose-600 hover:bg-rose-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+      else if (s6CurrentStep === 2 || s6CurrentStep === 4) {
+        const nextExIndex = s6CurrentStep === 2 ? 1 : 2;
+        const nextEx = S6_EXERCISES[nextExIndex];
+
+        badge.textContent = `Récupération Inter-Tabata (${s6CurrentStep / 2} / 2)`;
+        title.textContent = "Temps de repos (2'00)";
+        consigneText.innerHTML = `<span class="text-emerald-700 font-bold block mb-1">⏱️ Préparez-vous pour l'Exercice ${nextEx.num} : ${nextEx.title}</span>` + nextEx.consigne;
+
+        const m = Math.floor(s6RestTimeLeft / 60);
+        const s = s6RestTimeLeft % 60;
+        timerDisplay.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        stateLabel.className = "text-xs font-black uppercase tracking-widest text-emerald-600 block mb-1";
+        stateLabel.textContent = "🍃 REPOS EN VERT";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-emerald-600 block";
+
+        phaseBadge.textContent = "Pause 2'00";
+        intervalDisplay.textContent = "Prochain Tabata imminant";
+
+        mainBtn.textContent = s6IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+
+        skipRestBtn.classList.remove('hidden');
+      }
+      else if (s6CurrentStep === 6) {
+        badge.textContent = "Séance Terminée !";
+        title.textContent = "Bravo pour vos efforts !";
+        consigneText.innerHTML = "Cliquez ci-dessous pour valider votre séance et consulter le récapitulatif.";
+
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-600 inline-block w-full max-w-xs shadow-lg transition-all";
+        stateLabel.className = "text-xs font-black uppercase tracking-widest text-emerald-700 block mb-1";
+        stateLabel.textContent = "🏆 SÉANCE ACCOMPLIE";
+        timerDisplay.className = "font-display font-black text-4xl tracking-tight text-emerald-700 block my-2";
+        timerDisplay.textContent = "TERMINÉ !";
+
+        phaseBadge.textContent = "3 / 3 Tabatas accomplis";
+        intervalDisplay.textContent = "11'30 d'abdominaux";
+
+        mainBtn.textContent = "Valider ma séance";
+        mainBtn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+    }
+
+    function startS6Interval() {
+      clearInterval(s6TimerInterval);
+      s6TimerInterval = setInterval(() => {
+        if (s6IsPaused) return;
+
+        if (s6CurrentStep === 1 || s6CurrentStep === 3 || s6CurrentStep === 5) {
+          const infoBefore = getTabataPhaseInfo(s6TabataTimeLeft);
+
+          if (infoBefore.left <= 3 && infoBefore.left > 1) {
+            playBeep(700, 0.12);
+          } else if (infoBefore.left === 1) {
+            playBeep(900, 0.18);
+          }
+
+          s6TabataTimeLeft--;
+          setupS6UI();
+
+          if (s6TabataTimeLeft > 0) {
+            const infoAfter = getTabataPhaseInfo(s6TabataTimeLeft);
+            if (infoBefore.phaseNum !== infoAfter.phaseNum) {
+              playIntermediaryGongSound();
+            }
+          } else {
+            playFinalGongSound();
+
+            if (s6CurrentStep === 1) {
+              s6CurrentStep = 2;
+              s6RestTimeLeft = 120;
+            } else if (s6CurrentStep === 3) {
+              s6CurrentStep = 4;
+              s6RestTimeLeft = 120;
+            } else if (s6CurrentStep === 5) {
+              s6CurrentStep = 6;
+              clearInterval(s6TimerInterval);
+            }
+            setupS6UI();
+          }
+        }
+        else if (s6CurrentStep === 2 || s6CurrentStep === 4) {
+          if ([3, 2, 1].includes(s6RestTimeLeft)) {
+            playBeep(700, 0.12);
+          }
+
+          s6RestTimeLeft--;
+          setupS6UI();
+
+          if (s6RestTimeLeft <= 0) {
+            playIntermediaryGongSound();
+
+            if (s6CurrentStep === 2) {
+              s6CurrentStep = 3;
+              s6TabataTimeLeft = 230;
+            } else if (s6CurrentStep === 4) {
+              s6CurrentStep = 5;
+              s6TabataTimeLeft = 230;
+            }
+            setupS6UI();
+          }
+        }
+      }, 1000);
+    }
+
+    function handleS6Action() {
+      initAudio();
+
+      if (s6CurrentStep === 6) {
+        finishS6Workout();
+        return;
+      }
+
+      s6IsPaused = !s6IsPaused;
+      document.getElementById('s6-action-btn').textContent = s6IsPaused ? "Continuer" : "Pause";
+    }
+
+    function skipS6Rest() {
+      initAudio();
+      playIntermediaryGongSound();
+
+      if (s6CurrentStep === 2) {
+        s6CurrentStep = 3;
+        s6TabataTimeLeft = 230;
+      } else if (s6CurrentStep === 4) {
+        s6CurrentStep = 5;
+        s6TabataTimeLeft = 230;
+      }
+      setupS6UI();
+    }
+
+    function finishS6Workout() {
+      showVictory(
+        6,
+        `• <strong>11'30 d'abdominaux</strong> au format Tabata (3 exercices x 3'50)<br>
+         • Exercice 1 : Élévation jambes 4 temps<br>
+         • Exercice 2 : Crunch, Sit-up ou Crunch foot to foot<br>
+         • Exercice 3 : Mountain climbers<br>
+         • 2 temps de récupération active de 2'00 accomplis avec succès !`
+      );
+    }
+
+
+    /* ===================================================================
+       9. FRC5 LOGIQUE - TEST DAY N° 1
+       =================================================================== */
+    let s5State = 'TEST1_READY';
+    let s5TimerInterval = null;
+    let s5TimeCounter = 0;
+    let s5IsPaused = false;
+
+    let s5PlankTimeSec = 0;
+    let s5SquatsJumpReps = 0;
+    let s5PompesReps = 0;
+
+    function startS5WorkoutFlow() {
+      showScreen('screen-s5-runner');
+      clearInterval(s5TimerInterval);
+
+      s5State = 'TEST1_READY';
+      s5TimeCounter = 0;
+      s5IsPaused = false;
+      s5PlankTimeSec = 0;
+      s5SquatsJumpReps = 0;
+      s5PompesReps = 0;
+
+      setupS5UI();
+    }
+
+    function setupS5UI() {
+      const box = document.getElementById('s5-timer-box');
+      const warning = document.getElementById('s5-warning-message');
+      const timerDisplay = document.getElementById('s5-timer-display');
+      const mainBtn = document.getElementById('s5-action-btn');
+      const repsBlock = document.getElementById('s5-reps-input-block');
+      const mainTarget = document.getElementById('s5-box-main-target');
+      const testBadge = document.getElementById('s5-test-badge');
+      const exTitle = document.getElementById('s5-exercise-title');
+
+      repsBlock.classList.add('hidden');
+      mainTarget.classList.add('hidden');
+
+      if (s5State === 'TEST1_READY') {
+        testBadge.textContent = "Test n° 1 / 3";
+        exTitle.textContent = "Test n° 1 : La planche";
+        box.className = "p-6 rounded-3xl bg-gray-50 border-4 border-black inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-black block";
+        timerDisplay.textContent = "0'00";
+        warning.className = "text-xs font-extrabold text-gray-500 uppercase tracking-wide mt-3 block";
+        warning.textContent = "Planche prête";
+        mainBtn.textContent = "C'est parti";
+        mainBtn.className = "w-full py-5 px-6 bg-black hover:bg-gray-800 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+      else if (s5State === 'TEST1_RUNNING') {
+        testBadge.textContent = "Test n° 1 / 3";
+        exTitle.textContent = "Test n° 1 : La planche";
+        box.className = "p-6 rounded-3xl bg-gray-50 border-4 border-black inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-black block";
+        warning.className = "text-xs font-extrabold text-rose-600 uppercase tracking-wide mt-3 block";
+        warning.textContent = "Planche en cours";
+        mainBtn.textContent = "Stop";
+        mainBtn.className = "w-full py-5 px-6 bg-rose-600 hover:bg-rose-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+      else if (s5State === 'RECUP1_RUNNING' || s5State === 'RECUP2_RUNNING') {
+        testBadge.textContent = s5State === 'RECUP1_RUNNING' ? "Récupération n° 1" : "Récupération n° 2";
+        exTitle.textContent = "Temps de repos";
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-6xl tracking-tight text-emerald-600 block";
+        warning.className = "text-xs font-extrabold text-emerald-600 uppercase tracking-wide mt-3 block";
+        warning.textContent = "Récupération en cours";
+        mainBtn.textContent = "Passer la récup";
+        mainBtn.className = "w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-2xl shadow-md active:scale-95 transition-all";
+      }
+      else if (s5State === 'TEST2_RUNNING') {
+        testBadge.textContent = "Test n° 2 / 3";
+        exTitle.textContent = "Test n° 2 : Maximum de Squats jump";
+        mainTarget.classList.remove('hidden');
+        mainTarget.textContent = "Maximum de Squats jump";
+        box.className = "p-6 rounded-3xl bg-amber-50 border-4 border-amber-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-5xl tracking-tight text-amber-900 block";
+        warning.className = "text-xs font-extrabold text-amber-800 uppercase tracking-wide mt-3 block";
+        warning.textContent = "Squats Jump en cours";
+        mainBtn.textContent = s5IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-amber-600 hover:bg-amber-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+      else if (s5State === 'TEST3_RUNNING') {
+        testBadge.textContent = "Test n° 3 / 3";
+        exTitle.textContent = "Test n° 3 : Maximum de Pompes";
+        mainTarget.classList.remove('hidden');
+        mainTarget.textContent = "Maximum de Pompes";
+        box.className = "p-6 rounded-3xl bg-amber-50 border-4 border-amber-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-5xl tracking-tight text-amber-900 block";
+        warning.className = "text-xs font-extrabold text-amber-800 uppercase tracking-wide mt-3 block";
+        warning.textContent = "Pompes en cours";
+        mainBtn.textContent = s5IsPaused ? "Continuer" : "Pause";
+        mainBtn.className = "w-full py-5 px-6 bg-amber-600 hover:bg-amber-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+      else if (s5State === 'TEST3_FINISHED') {
+        testBadge.textContent = "Bilan des Tests";
+        exTitle.textContent = "Tests terminés !";
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-600 inline-block w-full max-w-xs shadow-lg transition-all";
+        timerDisplay.className = "font-display font-black text-4xl tracking-tight text-emerald-700 block";
+        timerDisplay.textContent = "Terminé !";
+        warning.className = "text-xs font-extrabold text-emerald-700 uppercase tracking-wide mt-2 block";
+        warning.textContent = "Cliquez sur 'Terminer la séance'";
+        
+        repsBlock.classList.remove('hidden');
+        document.getElementById('s5-reps-label').textContent = "Entrez votre nombre de Pompes réalisées en 2' :";
+        document.getElementById('s5-reps-input').value = s5PompesReps || "";
+
+        mainBtn.textContent = "Terminer la séance";
+        mainBtn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-wide";
+      }
+    }
+
+    function handleS5Action() {
+      initAudio();
+
+      if (s5State === 'TEST1_READY') {
+        s5State = 'TEST1_RUNNING';
+        s5TimeCounter = 0;
+        setupS5UI();
+
+        clearInterval(s5TimerInterval);
+        s5TimerInterval = setInterval(() => {
+          s5TimeCounter++;
+          s5PlankTimeSec = s5TimeCounter;
+
+          const m = Math.floor(s5TimeCounter / 60);
+          const s = s5TimeCounter % 60;
+          document.getElementById('s5-timer-display').textContent = `${m}'${String(s).padStart(2,'0')}`;
+
+          if (s5TimeCounter % 30 === 0 && s5TimeCounter > 0) {
+            playBeep(800, 0.25);
+          }
+        }, 1000);
+      }
+      else if (s5State === 'TEST1_RUNNING') {
+        clearInterval(s5TimerInterval);
+        s5State = 'RECUP1_RUNNING';
+        s5TimeCounter = 180;
+        setupS5UI();
+
+        startS5RecupTimer(() => {
+          startS5Test2();
+        });
+      }
+      else if (s5State === 'RECUP1_RUNNING') {
+        clearInterval(s5TimerInterval);
+        startS5Test2();
+      }
+      else if (s5State === 'TEST2_RUNNING') {
+        s5IsPaused = !s5IsPaused;
+        document.getElementById('s5-action-btn').textContent = s5IsPaused ? "Continuer" : "Pause";
+      }
+      else if (s5State === 'RECUP2_RUNNING') {
+        clearInterval(s5TimerInterval);
+        startS5Test3();
+      }
+      else if (s5State === 'TEST3_RUNNING') {
+        s5IsPaused = !s5IsPaused;
+        document.getElementById('s5-action-btn').textContent = s5IsPaused ? "Continuer" : "Pause";
+      }
+      else if (s5State === 'TEST3_FINISHED') {
+        const inputVal = parseInt(document.getElementById('s5-reps-input').value) || 0;
+        s5PompesReps = inputVal;
+
+        const plankMinStr = Math.floor(s5PlankTimeSec / 60);
+        const plankSecStr = s5PlankTimeSec % 60;
+        const plankFormatted = `${plankMinStr}'${String(plankSecStr).padStart(2,'0')}`;
+
+        showVictory(
+          5,
+          `• <strong>${plankFormatted}</strong> de Planche<br>
+           • <strong>${s5SquatsJumpReps}</strong> Jump Squats en 2'<br>
+           • <strong>${s5PompesReps}</strong> Pompes en 2'<br><br>
+           <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 font-bold text-xs shadow-xs space-y-1">
+             <div class="flex items-center gap-1 text-amber-800 text-xs">
+               <span>📝 <strong>IMPORTANT : À BIEN NOTER !</strong></span>
+             </div>
+             <p class="font-semibold text-amber-900 leading-snug">
+               Pensez à bien noter vos scores réalisés lors de ces 3 tests ! Ils vous serviront de référence pour mesurer votre progression lors de vos futurs Test Days.
+             </p>
+           </div>`
+        );
+      }
+    }
+
+    function startS5RecupTimer(onFinish) {
+      document.getElementById('s5-timer-display').textContent = "3'00";
+
+      clearInterval(s5TimerInterval);
+      s5TimerInterval = setInterval(() => {
+        s5TimeCounter--;
+
+        const m = Math.floor(s5TimeCounter / 60);
+        const s = s5TimeCounter % 60;
+        document.getElementById('s5-timer-display').textContent = `${m}'${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(s5TimeCounter)) {
+          playBeep(700, 0.15);
+        }
+
+        if (s5TimeCounter <= 0) {
+          clearInterval(s5TimerInterval);
+          playFinalGongSound();
+          onFinish();
+        }
+      }, 1000);
+    }
+
+    function startS5Test2() {
+      s5State = 'TEST2_RUNNING';
+      s5TimeCounter = 120;
+      s5IsPaused = false;
+      setupS5UI();
+
+      document.getElementById('s5-timer-display').textContent = "2'00";
+
+      clearInterval(s5TimerInterval);
+      s5TimerInterval = setInterval(() => {
+        if (s5IsPaused) return;
+
+        s5TimeCounter--;
+
+        const m = Math.floor(s5TimeCounter / 60);
+        const s = s5TimeCounter % 60;
+        document.getElementById('s5-timer-display').textContent = `${m}'${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(s5TimeCounter)) {
+          playBeep(700, 0.15);
+        }
+
+        if (s5TimeCounter <= 0) {
+          clearInterval(s5TimerInterval);
+          playFinalGongSound();
+
+          promptS5Reps("Squats Jump", (reps) => {
+            s5SquatsJumpReps = reps;
+            s5State = 'RECUP2_RUNNING';
+            s5TimeCounter = 180;
+            setupS5UI();
+            startS5RecupTimer(() => {
+              startS5Test3();
+            });
+          });
+        }
+      }, 1000);
+    }
+
+    function startS5Test3() {
+      s5State = 'TEST3_RUNNING';
+      s5TimeCounter = 120;
+      s5IsPaused = false;
+      setupS5UI();
+
+      document.getElementById('s5-timer-display').textContent = "2'00";
+
+      clearInterval(s5TimerInterval);
+      s5TimerInterval = setInterval(() => {
+        if (s5IsPaused) return;
+
+        s5TimeCounter--;
+
+        const m = Math.floor(s5TimeCounter / 60);
+        const s = s5TimeCounter % 60;
+        document.getElementById('s5-timer-display').textContent = `${m}'${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(s5TimeCounter)) {
+          playBeep(700, 0.15);
+        }
+
+        if (s5TimeCounter <= 0) {
+          clearInterval(s5TimerInterval);
+          playFinalGongSound();
+
+          s5State = 'TEST3_FINISHED';
+          setupS5UI();
+        }
+      }, 1000);
+    }
+
+    function promptS5Reps(exName, callback) {
+      const repsBlock = document.getElementById('s5-reps-input-block');
+      repsBlock.classList.remove('hidden');
+      document.getElementById('s5-reps-label').textContent = `Nombre de ${exName} réalisés en 2' :`;
+      document.getElementById('s5-reps-input').value = "";
+      document.getElementById('s5-reps-input').focus();
+
+      const mainBtn = document.getElementById('s5-action-btn');
+      mainBtn.textContent = "Enregistrer & Récupérer";
+      mainBtn.className = "w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-2xl shadow-lg active:scale-95 transition-all";
+
+      mainBtn.onclick = () => {
+        const val = parseInt(document.getElementById('s5-reps-input').value) || 0;
+        repsBlock.classList.add('hidden');
+        mainBtn.onclick = handleS5Action;
+        callback(val);
+      };
+    }
+
+    /* ===================================================================
+       10. FRC1 LOGIQUE
+       =================================================================== */
+    let s1Ex1TimeLeft = 300;
+    let s1Ex1Interval = null;
+    let s1Ex1State = 'INITIAL';
+
+    function startS1Ex1Screen() {
+      showScreen('screen-s1-ex1-timer');
+      clearInterval(s1Ex1Interval);
+      s1Ex1TimeLeft = 300;
+      s1Ex1State = 'INITIAL';
+      document.getElementById('s1-ex1-timer-display').textContent = "05:00";
+      document.getElementById('s1-ex1-status-label').textContent = "Prêt";
+      document.getElementById('s1-ex1-btn').textContent = "C'est parti";
+    }
+
+    function handleS1Ex1Click() {
+      initAudio();
+      const btn = document.getElementById('s1-ex1-btn');
+      if (s1Ex1State === 'INITIAL' || s1Ex1State === 'PAUSED') {
+        s1Ex1State = 'RUNNING';
+        btn.textContent = "Pause";
+        document.getElementById('s1-ex1-status-label').textContent = "En cours";
+        s1Ex1Interval = setInterval(() => {
+          s1Ex1TimeLeft--;
+          const m = Math.floor(s1Ex1TimeLeft / 60);
+          const s = s1Ex1TimeLeft % 60;
+          document.getElementById('s1-ex1-timer-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+          if ([240, 180, 120, 60].includes(s1Ex1TimeLeft)) playBeep(800, 0.2);
+          if ([3, 2, 1].includes(s1Ex1TimeLeft)) playBeep(600, 0.15);
+
+          if (s1Ex1TimeLeft <= 0) {
+            clearInterval(s1Ex1Interval);
+            playFinalGongSound();
+            s1Ex1State = 'FINISHED';
+            document.getElementById('s1-ex1-status-label').textContent = "Objectif atteint !";
+            btn.textContent = "Passer à l'exercice suivant";
+          }
+        }, 1000);
+      } else if (s1Ex1State === 'RUNNING') {
+        clearInterval(s1Ex1Interval);
+        s1Ex1State = 'PAUSED';
+        btn.textContent = "Continuer";
+        document.getElementById('s1-ex1-status-label').textContent = "En pause";
+      } else if (s1Ex1State === 'FINISHED') {
+        showScreen('screen-s1-ex2-intro');
+      }
+    }
+
+    let s1Ex2TimeLeft = 230;
+    let s1Ex2Interval = null;
+    let s1Ex2State = 'INITIAL';
+
+    function startS1Ex2Screen() {
+      showScreen('screen-s1-ex2-timer');
+      clearInterval(s1Ex2Interval);
+      s1Ex2TimeLeft = 230;
+      s1Ex2State = 'INITIAL';
+      updateS1Ex2UI();
+      document.getElementById('s1-ex2-btn').textContent = "C'est parti";
+    }
+
+    function updateS1Ex2UI() {
+      const m = Math.floor(s1Ex2TimeLeft / 60);
+      const s = s1Ex2TimeLeft % 60;
+      document.getElementById('s1-ex2-timer-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const info = getTabataPhaseInfo(s1Ex2TimeLeft);
+      document.getElementById('s1-tabata-phase-badge').textContent = `Phase ${info.phaseNum} / 15`;
+      document.getElementById('s1-tabata-interval-display').textContent = `Reste phase : ${info.left}s`;
+
+      const box = document.getElementById('s1-tabata-box');
+      if (info.isWork) {
+        box.className = "p-8 rounded-3xl bg-red-50 border-4 border-red-500 transition-all duration-500 inline-block w-full max-w-xs shadow-lg";
+        document.getElementById('s1-tabata-state-label').textContent = "🔥 TRAVAIL";
+      } else {
+        box.className = "p-8 rounded-3xl bg-emerald-50 border-4 border-emerald-500 transition-all duration-500 inline-block w-full max-w-xs shadow-lg";
+        document.getElementById('s1-tabata-state-label').textContent = "🍃 REPOS";
+      }
+    }
+
+    function handleS1Ex2Click() {
+      initAudio();
+      const btn = document.getElementById('s1-ex2-btn');
+      if (s1Ex2State === 'INITIAL' || s1Ex2State === 'PAUSED') {
+        s1Ex2State = 'RUNNING';
+        btn.textContent = "Pause";
+        s1Ex2Interval = setInterval(() => {
+          const infoBefore = getTabataPhaseInfo(s1Ex2TimeLeft);
+
+          if (infoBefore.left <= 3 && infoBefore.left > 1) {
+            playBeep(700, 0.12);
+          } else if (infoBefore.left === 1) {
+            playBeep(900, 0.18);
+          }
+
+          s1Ex2TimeLeft--;
+          updateS1Ex2UI();
+
+          if (s1Ex2TimeLeft > 0) {
+            const infoAfter = getTabataPhaseInfo(s1Ex2TimeLeft);
+            if (infoBefore.phaseNum !== infoAfter.phaseNum) {
+              playIntermediaryGongSound();
+            }
+          } else {
+            clearInterval(s1Ex2Interval);
+            playFinalGongSound();
+            showVictory(1, "5' Gainage + Tabata Abdominaux (15 phases)");
+          }
+        }, 1000);
+      } else if (s1Ex2State === 'RUNNING') {
+        clearInterval(s1Ex2Interval);
+        s1Ex2State = 'PAUSED';
+        btn.textContent = "Continuer";
+      }
+    }
+
+    /* ===================================================================
+       11. FRC2 LOGIQUE
+       =================================================================== */
+    let s2Ex1RepsLeft = 200;
+    let s2Ex1TotalRepsDone = 0;
+    let s2Ex1AbdosTimeSec = 0;
+    let s2Ex1SeriesHistory = [];
+    let s2Ex1IsPlanB = false;
+    let s2Ex1TimerInterval = null;
+
+    function startS2Ex1Screen() {
+      showScreen('screen-s2-ex1-workout');
+      s2Ex1RepsLeft = 200;
+      s2Ex1TotalRepsDone = 0;
+      s2Ex1AbdosTimeSec = 0;
+      s2Ex1SeriesHistory = [];
+      s2Ex1IsPlanB = document.getElementById('s2-ex1-planb-check').checked;
+
+      document.getElementById('s2-ex1-counter-display').textContent = "200";
+      document.getElementById('s2-ex1-status-title').textContent = "Restant";
+      document.getElementById('s2-ex1-subtext').textContent = "Prêt";
+      document.getElementById('s2-ex1-input-container').classList.add('hidden');
+      document.getElementById('s2-ex1-series-recap').classList.add('hidden');
+      document.getElementById('s2-ex1-series-recap').innerHTML = '';
+
+      const btn = document.getElementById('s2-ex1-main-btn');
+      btn.textContent = "C'est parti";
+      btn.onclick = handleS2Ex1MainAction;
+    }
+
+    function handleS2Ex1MainAction() {
+      const btn = document.getElementById('s2-ex1-main-btn');
+      document.getElementById('s2-ex1-subtext').textContent = "Mountain climbers en cours";
+      btn.textContent = "Saisir ma série";
+      btn.onclick = () => {
+        document.getElementById('s2-ex1-input-container').classList.remove('hidden');
+        document.getElementById('s2-ex1-reps-input').value = '';
+        document.getElementById('s2-ex1-reps-input').focus();
+      };
+    }
+
+    function submitS2Ex1Series() {
+      const input = document.getElementById('s2-ex1-reps-input');
+      const val = parseInt(input.value) || 0;
+      if (val <= 0) return;
+
+      s2Ex1TotalRepsDone += val;
+      s2Ex1RepsLeft = Math.max(0, s2Ex1RepsLeft - val);
+      s2Ex1SeriesHistory.push(val);
+
+      renderS2Ex1Recap();
+      document.getElementById('s2-ex1-input-container').classList.add('hidden');
+
+      if (s2Ex1RepsLeft <= 0) {
+        document.getElementById('s2-ex1-counter-display').textContent = "0";
+        document.getElementById('s2-ex1-subtext').textContent = "Objectif atteint !";
+        playFinalGongSound();
+
+        const btn = document.getElementById('s2-ex1-main-btn');
+        btn.textContent = "Passer à l'exercice suivant";
+        btn.onclick = () => showScreen('screen-s2-ex2-intro');
+      } else {
+        startS2Ex1ActiveRest();
+      }
+    }
+
+    function renderS2Ex1Recap() {
+      const container = document.getElementById('s2-ex1-series-recap');
+      container.classList.remove('hidden');
+      container.innerHTML = s2Ex1SeriesHistory.map((reps, i) => `<div>Série ${i+1} : <strong>${reps}</strong> reps</div>`).join('');
+    }
+
+    function startS2Ex1ActiveRest() {
+      let restTime = s2Ex1IsPlanB ? 30 : 60;
+      const box = document.getElementById('s2-ex1-box');
+      box.className = "p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all";
+      document.getElementById('s2-ex1-status-title').textContent = "Abdominaux";
+      document.getElementById('s2-ex1-subtext').textContent = "Récupération Active";
+
+      const btn = document.getElementById('s2-ex1-main-btn');
+      btn.textContent = "Pause";
+      let isPaused = false;
+
+      btn.onclick = () => {
+        isPaused = !isPaused;
+        btn.textContent = isPaused ? "Continuer" : "Pause";
+      };
+
+      clearInterval(s2Ex1TimerInterval);
+      s2Ex1TimerInterval = setInterval(() => {
+        if (isPaused) return;
+
+        restTime--;
+        s2Ex1AbdosTimeSec++;
+        
+        const m = Math.floor(restTime / 60);
+        const s = restTime % 60;
+        document.getElementById('s2-ex1-counter-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(restTime)) playBeep(700, 0.15);
+
+        if (restTime <= 0) {
+          clearInterval(s2Ex1TimerInterval);
+          playIntermediaryGongSound();
+
+          box.className = "p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner";
+          document.getElementById('s2-ex1-status-title').textContent = "Restant";
+          document.getElementById('s2-ex1-counter-display').textContent = s2Ex1RepsLeft;
+          document.getElementById('s2-ex1-subtext').textContent = "Mountain climbers en cours";
+
+          btn.textContent = "Saisir ma série";
+          btn.onclick = () => {
+            document.getElementById('s2-ex1-input-container').classList.remove('hidden');
+            document.getElementById('s2-ex1-reps-input').value = '';
+            document.getElementById('s2-ex1-reps-input').focus();
+          };
+        }
+      }, 1000);
+    }
+
+    let s2Ex2CurrentSeries = 1;
+    let s2Ex2History = [];
+    let s2Ex2TimerInterval = null;
+
+    function startS2Ex2Screen() {
+      showScreen('screen-s2-ex2-workout');
+      s2Ex2CurrentSeries = 1;
+      s2Ex2History = [];
+
+      document.getElementById('s2-ex2-counter-display').textContent = "Série 1";
+      document.getElementById('s2-ex2-subtext').textContent = "Prêt";
+      document.getElementById('s2-ex2-input-container').classList.add('hidden');
+      document.getElementById('s2-ex2-series-recap').classList.add('hidden');
+      document.getElementById('s2-ex2-series-recap').innerHTML = '';
+
+      const btn = document.getElementById('s2-ex2-main-btn');
+      btn.textContent = "C'est parti";
+      btn.onclick = handleS2Ex2MainAction;
+    }
+
+    function handleS2Ex2MainAction() {
+      document.getElementById('s2-ex2-subtext').textContent = "Pompes en cours";
+      const btn = document.getElementById('s2-ex2-main-btn');
+      btn.textContent = `Saisir Série ${s2Ex2CurrentSeries}`;
+      btn.onclick = () => {
+        document.getElementById('s2-ex2-input-container').classList.remove('hidden');
+        document.getElementById('s2-ex2-reps-input').value = '';
+        document.getElementById('s2-ex2-reps-input').focus();
+        document.getElementById('s2-ex2-submit-btn').textContent = s2Ex2CurrentSeries === 3 ? "Terminer la séance" : "Lancer ma récup";
+      };
+    }
+
+    function submitS2Ex2Series() {
+      const val = parseInt(document.getElementById('s2-ex2-reps-input').value) || 0;
+      const isPlanB = document.getElementById('s2-ex2-series-planb').checked;
+
+      s2Ex2History.push({ reps: val, isPlanB: isPlanB });
+      renderS2Ex2Recap();
+
+      document.getElementById('s2-ex2-input-container').classList.add('hidden');
+
+      if (s2Ex2CurrentSeries >= 3) {
+        let totalPompes = 0;
+        let normales = 0;
+        let genoux = 0;
+        s2Ex2History.forEach(h => {
+          totalPompes += h.reps;
+          if (h.isPlanB) genoux += h.reps; else normales += h.reps;
+        });
+
+        const abdosMin = Math.round(s2Ex1AbdosTimeSec / 60);
+        let pompesTxt = `${totalPompes} pompes`;
+        if (genoux > 0) pompesTxt += ` (${normales} classiques et ${genoux} sur les genoux)`;
+
+        showVictory(
+          2, 
+          `• <strong>${s2Ex1TotalRepsDone}</strong> Mountain climbers<br>
+           • <strong>${abdosMin}'</strong> d'Abdominaux<br>
+           • <strong>${pompesTxt}</strong><br><br>
+           <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 font-bold text-xs shadow-xs space-y-1">
+             <div class="flex items-center gap-1 text-amber-800 text-xs">
+               <span>📝 <strong>IMPORTANT : À BIEN NOTER !</strong></span>
+             </div>
+             <p class="font-semibold text-amber-900 leading-snug">
+               Pensez à bien noter votre total de pompes réalisées (<strong>${totalPompes} pompes</strong>) ! Ce chiffre vous sera très utile pour la séance <strong>FRC3 - LE PONT COMME RÉCUPÉRATION</strong>.
+             </p>
+           </div>`
+        );
+      } else {
+        startS2Ex2Rest();
+      }
+    }
+
+    function renderS2Ex2Recap() {
+      const container = document.getElementById('s2-ex2-series-recap');
+      container.classList.remove('hidden');
+      container.innerHTML = s2Ex2History.map((h, i) => `<div>Série ${i+1} : <strong>${h.reps}</strong> reps ${h.isPlanB ? '(sur les genoux)' : '(classiques)'}</div>`).join('');
+    }
+
+    function startS2Ex2Rest() {
+      let restTime = 60;
+      const box = document.getElementById('s2-ex2-box');
+      box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+      document.getElementById('s2-ex2-status-title').textContent = "Récupération";
+      document.getElementById('s2-ex2-subtext').textContent = "Pause 1 minute";
+
+      const btn = document.getElementById('s2-ex2-main-btn');
+      btn.textContent = "Pause";
+      let isPaused = false;
+
+      btn.onclick = () => {
+        isPaused = !isPaused;
+        btn.textContent = isPaused ? "Continuer" : "Pause";
+      };
+
+      clearInterval(s2Ex2TimerInterval);
+      s2Ex2TimerInterval = setInterval(() => {
+        if (isPaused) return;
+
+        restTime--;
+        const m = Math.floor(restTime / 60);
+        const s = restTime % 60;
+        document.getElementById('s2-ex2-counter-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(restTime)) playBeep(700, 0.15);
+
+        if (restTime <= 0) {
+          clearInterval(s2Ex2TimerInterval);
+          playIntermediaryGongSound();
+
+          s2Ex2CurrentSeries++;
+          box.className = "p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner";
+          document.getElementById('s2-ex2-status-title').textContent = "Statut";
+          document.getElementById('s2-ex2-counter-display').textContent = `Série ${s2Ex2CurrentSeries}`;
+          document.getElementById('s2-ex2-subtext').textContent = "Pompes en cours";
+
+          btn.textContent = `Saisir Série ${s2Ex2CurrentSeries}`;
+          btn.onclick = () => {
+            document.getElementById('s2-ex2-input-container').classList.remove('hidden');
+            document.getElementById('s2-ex2-reps-input').value = '';
+            document.getElementById('s2-ex2-reps-input').focus();
+            document.getElementById('s2-ex2-submit-btn').textContent = s2Ex2CurrentSeries === 3 ? "Terminer la séance" : "Lancer ma récup";
+          };
+        }
+      }, 1000);
+    }
+
+    /* ===================================================================
+       12. FRC3 LOGIQUE
+       =================================================================== */
+    const S3_LEVELS = {
+      debutant: { name: "Débutant", totalSquats: 60, repsPerSeries: 12, bridgeSec: 30, bridgeText: '30"' },
+      intermediaire: { name: "Intermédiaire", totalSquats: 80, repsPerSeries: 16, bridgeSec: 45, bridgeText: '45"' },
+      confirme: { name: "Confirmé", totalSquats: 100, repsPerSeries: 20, bridgeSec: 60, bridgeText: "1'" },
+      expert: { name: "Expert", totalSquats: 120, repsPerSeries: 24, bridgeSec: 60, bridgeText: "1'" },
+      champion: { name: "Champion", totalSquats: 150, repsPerSeries: 30, bridgeSec: 60, bridgeText: "1'" }
+    };
+
+    let s3Ex1CurrentSeries = 1;
+    let s3Ex1SelectedLevel = 'confirme';
+    let s3Ex1TimerInterval = null;
+
+    function startS3Ex1Screen() {
+      showScreen('screen-s3-ex1-workout');
+      s3Ex1CurrentSeries = 1;
+
+      const checkedRadio = document.querySelector('input[name="s3-level"]:checked');
+      s3Ex1SelectedLevel = checkedRadio ? checkedRadio.value : 'confirme';
+      const levelData = S3_LEVELS[s3Ex1SelectedLevel];
+
+      document.getElementById('s3-ex1-status-title').textContent = `Série 1 / 5 (${levelData.name})`;
+      document.getElementById('s3-ex1-counter-display').textContent = `Faire ${levelData.repsPerSeries} Squats`;
+      document.getElementById('s3-ex1-subtext').textContent = "Prêt";
+
+      const btn = document.getElementById('s3-ex1-main-btn');
+      btn.textContent = "C'est parti";
+      btn.onclick = handleS3Ex1MainAction;
+    }
+
+    function handleS3Ex1MainAction() {
+      document.getElementById('s3-ex1-subtext').textContent = "Squats en cours";
+      const btn = document.getElementById('s3-ex1-main-btn');
+      btn.textContent = "Pont Statique";
+      btn.onclick = startS3Ex1BridgeTimer;
+    }
+
+    function startS3Ex1BridgeTimer() {
+      const levelData = S3_LEVELS[s3Ex1SelectedLevel];
+      let restTime = levelData.bridgeSec;
+
+      const box = document.getElementById('s3-ex1-box');
+      box.className = "p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all";
+      document.getElementById('s3-ex1-status-title').textContent = "Pont statique";
+      document.getElementById('s3-ex1-subtext').textContent = "Maintien de la position";
+
+      const btn = document.getElementById('s3-ex1-main-btn');
+      btn.textContent = "Pause";
+      let isPaused = false;
+
+      btn.onclick = () => {
+        isPaused = !isPaused;
+        btn.textContent = isPaused ? "Continuer" : "Pause";
+      };
+
+      clearInterval(s3Ex1TimerInterval);
+      s3Ex1TimerInterval = setInterval(() => {
+        if (isPaused) return;
+
+        restTime--;
+        const m = Math.floor(restTime / 60);
+        const s = restTime % 60;
+        document.getElementById('s3-ex1-counter-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(restTime)) playBeep(700, 0.15);
+
+        if (restTime <= 0) {
+          clearInterval(s3Ex1TimerInterval);
+          playIntermediaryGongSound();
+
+          box.className = "p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner";
+
+          if (s3Ex1CurrentSeries >= 5) {
+            document.getElementById('s3-ex1-status-title').textContent = "Exercice 1 Terminé !";
+            document.getElementById('s3-ex1-counter-display').textContent = `${levelData.totalSquats} Squats faits !`;
+            document.getElementById('s3-ex1-subtext').textContent = "Bravo !";
+
+            btn.textContent = "Passer à l'exercice suivant";
+            btn.onclick = () => showScreen('screen-s3-ex2-intro');
+          } else {
+            s3Ex1CurrentSeries++;
+            document.getElementById('s3-ex1-status-title').textContent = `Série ${s3Ex1CurrentSeries} / 5 (${levelData.name})`;
+            document.getElementById('s3-ex1-counter-display').textContent = `Faire ${levelData.repsPerSeries} Squats`;
+            document.getElementById('s3-ex1-subtext').textContent = "Squats en cours";
+
+            btn.textContent = "Pont Statique";
+            btn.onclick = startS3Ex1BridgeTimer;
+          }
+        }
+      }, 1000);
+    }
+
+    let s3Ex2CurrentSeries = 1;
+    let s3Ex2SeriesPlan = [];
+    let s3Ex2TimerInterval = null;
+
+    function updateS3PompesTarget() {
+      const val = document.getElementById('s3-pompes-base-input').value;
+      const base = parseInt(val);
+      if (!val || isNaN(base) || base <= 0) {
+        document.getElementById('s3-pompes-target-display').textContent = "0";
+        return;
+      }
+      const target = Math.round(base * 1.2);
+      document.getElementById('s3-pompes-target-display').textContent = target;
+    }
+
+    function startS3Ex2Screen() {
+      const val = document.getElementById('s3-pompes-base-input').value;
+      const base = parseInt(val) || 0;
+
+      if (base <= 0) {
+        alert("Veuillez saisir votre nombre de pompes effectuées lors de la séance FRC2.");
+        return;
+      }
+
+      showScreen('screen-s3-ex2-workout');
+      s3Ex2CurrentSeries = 1;
+
+      const totalTarget = Math.round(base * 1.2);
+
+      const baseReps = Math.floor(totalTarget / 5);
+      const remainder = totalTarget % 5;
+      s3Ex2SeriesPlan = [baseReps, baseReps, baseReps, baseReps, baseReps];
+      for (let i = 0; i < remainder; i++) {
+        s3Ex2SeriesPlan[i]++;
+      }
+
+      document.getElementById('s3-ex2-status-title').textContent = "Série 1 / 5";
+      document.getElementById('s3-ex2-counter-display').textContent = `Faire ${s3Ex2SeriesPlan[0]} Pompes`;
+      document.getElementById('s3-ex2-subtext').textContent = "Prêt";
+
+      const btn = document.getElementById('s3-ex2-main-btn');
+      btn.textContent = "C'est parti";
+      btn.onclick = handleS3Ex2MainAction;
+    }
+
+    function handleS3Ex2MainAction() {
+      document.getElementById('s3-ex2-subtext').textContent = "Pompes en cours";
+      const btn = document.getElementById('s3-ex2-main-btn');
+
+      if (s3Ex2CurrentSeries >= 5) {
+        btn.textContent = "Terminer la séance";
+        btn.onclick = finishS3Workout;
+      } else {
+        btn.textContent = "Lancer la Récup";
+        btn.onclick = startS3Ex2RestTimer;
+      }
+    }
+
+    function startS3Ex2RestTimer() {
+      let restTime = 30;
+      const box = document.getElementById('s3-ex2-box');
+      box.className = "p-6 rounded-3xl bg-red-50 border-4 border-red-500 inline-block w-full max-w-xs shadow-lg transition-all";
+      document.getElementById('s3-ex2-status-title').textContent = "Repos";
+      document.getElementById('s3-ex2-subtext').textContent = "Récupération";
+
+      const btn = document.getElementById('s3-ex2-main-btn');
+      btn.textContent = "Pause";
+      let isPaused = false;
+
+      btn.onclick = () => {
+        isPaused = !isPaused;
+        btn.textContent = isPaused ? "Continuer" : "Pause";
+      };
+
+      clearInterval(s3Ex2TimerInterval);
+      s3Ex2TimerInterval = setInterval(() => {
+        if (isPaused) return;
+
+        restTime--;
+        const m = Math.floor(restTime / 60);
+        const s = restTime % 60;
+        document.getElementById('s3-ex2-counter-display').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(restTime)) playBeep(700, 0.15);
+
+        if (restTime <= 0) {
+          clearInterval(s3Ex2TimerInterval);
+          playIntermediaryGongSound();
+
+          s3Ex2CurrentSeries++;
+          box.className = "p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner";
+          document.getElementById('s3-ex2-status-title').textContent = `Série ${s3Ex2CurrentSeries} / 5`;
+          document.getElementById('s3-ex2-counter-display').textContent = `Faire ${s3Ex2SeriesPlan[s3Ex2CurrentSeries-1]} Pompes`;
+          document.getElementById('s3-ex2-subtext').textContent = "Pompes en cours";
+
+          if (s3Ex2CurrentSeries >= 5) {
+            btn.textContent = "Terminer la séance";
+            btn.onclick = finishS3Workout;
+          } else {
+            btn.textContent = "Lancer la Récup";
+            btn.onclick = startS3Ex2RestTimer;
+          }
+        }
+      }, 1000);
+    }
+
+    function finishS3Workout() {
+      const levelData = S3_LEVELS[s3Ex1SelectedLevel];
+      const totalPompes = s3Ex2SeriesPlan.reduce((a, b) => a + b, 0);
+
+      showVictory(
+        3,
+        `• Niveau choisi : <strong>${levelData.name}</strong><br>
+         • <strong>${levelData.totalSquats}</strong> Squats (${levelData.repsPerSeries} x 5 séries)<br>
+         • Pont statique (${levelData.bridgeText} entre les séries)<br>
+         • <strong>${totalPompes}</strong> Pompes accomplies (+20% vs FRC2)`
+      );
+    }
+
+    /* ===================================================================
+       13. FRC4 LOGIQUE (LE TOUR DU MONDE DU GAINAGE)
+       =================================================================== */
+    const S4_POSTURES = [
+      { name: "Planche", sub: "Planche en cours" },
+      { name: "Chaise", sub: "Chaise en cours" },
+      { name: "Pont statique", sub: "Pont statique en cours" },
+      { name: "Gainage latéral Gauche", sub: "Gainage latéral en cours" },
+      { name: "Gainage latéral Droit", sub: "Gainage latéral en cours" }
+    ];
+
+    const S4_LEVELS = {
+      debutant: { name: "Débutant", workSec: 30, restSec: 30 },
+      intermediaire: { name: "Intermédiaire", workSec: 40, restSec: 20 },
+      confirme: { name: "Confirmé", workSec: 50, restSec: 10 }
+    };
+
+    let s4CurrentStep = 0;
+    let s4SelectedLevel = 'confirme';
+    let s4TimerInterval = null;
+    let s4IsPaused = false;
+    let s4TimeLeft = 50;
+
+    function startS4Ex1Screen() {
+      showScreen('screen-s4-ex1-workout');
+      s4CurrentStep = 0;
+
+      const checkedRadio = document.querySelector('input[name="s4-level"]:checked');
+      s4SelectedLevel = checkedRadio ? checkedRadio.value : 'confirme';
+      s4IsPaused = false;
+      clearInterval(s4TimerInterval);
+
+      updateS4WorkoutUI(false);
+
+      const btn = document.getElementById('s4-ex1-main-btn');
+      btn.textContent = "C'est parti";
+      btn.onclick = handleS4Ex1StartClick;
+    }
+
+    function updateS4WorkoutUI(isRest = false) {
+      const postureIndex = s4CurrentStep % 5;
+      const roundNum = Math.floor(s4CurrentStep / 5) + 1;
+      const postureObj = S4_POSTURES[postureIndex];
+      const levelData = S4_LEVELS[s4SelectedLevel];
+
+      document.getElementById('s4-ex1-round-indicator').textContent = `Tour ${roundNum} / 3 • Série ${s4CurrentStep + 1} / 15 (${levelData.name})`;
+
+      const box = document.getElementById('s4-ex1-box');
+      if (isRest) {
+        box.className = "p-6 rounded-3xl bg-emerald-50 border-4 border-emerald-500 inline-block w-full max-w-xs shadow-lg transition-all";
+        document.getElementById('s4-ex1-status-title').textContent = "Récupération";
+        document.getElementById('s4-ex1-posture-display').textContent = "Repos";
+        document.getElementById('s4-ex1-subtext').textContent = "Préparez la posture suivante";
+      } else {
+        box.className = "p-6 rounded-3xl bg-blue-50 border-2 border-blue-200 inline-block w-full max-w-xs shadow-inner transition-all";
+        document.getElementById('s4-ex1-status-title').textContent = "Posture";
+        document.getElementById('s4-ex1-posture-display').textContent = postureObj.name;
+        document.getElementById('s4-ex1-subtext').textContent = postureObj.sub;
+      }
+    }
+
+    function handleS4Ex1StartClick() {
+      initAudio();
+      const btn = document.getElementById('s4-ex1-main-btn');
+      btn.textContent = "Pause";
+      btn.onclick = toggleS4Pause;
+
+      startS4WorkTimer();
+    }
+
+    function toggleS4Pause() {
+      s4IsPaused = !s4IsPaused;
+      const btn = document.getElementById('s4-ex1-main-btn');
+      btn.textContent = s4IsPaused ? "Continuer" : "Pause";
+    }
+
+    function startS4WorkTimer() {
+      const levelData = S4_LEVELS[s4SelectedLevel];
+      s4TimeLeft = levelData.workSec;
+      updateS4WorkoutUI(false);
+      document.getElementById('s4-ex1-timer-display').textContent = `00:${String(s4TimeLeft).padStart(2,'0')}`;
+
+      clearInterval(s4TimerInterval);
+      s4TimerInterval = setInterval(() => {
+        if (s4IsPaused) return;
+
+        s4TimeLeft--;
+        document.getElementById('s4-ex1-timer-display').textContent = `00:${String(s4TimeLeft).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(s4TimeLeft)) playBeep(700, 0.15);
+
+        if (s4TimeLeft <= 0) {
+          clearInterval(s4TimerInterval);
+          playIntermediaryGongSound();
+
+          if (s4CurrentStep >= 14) {
+            const btn = document.getElementById('s4-ex1-main-btn');
+            btn.textContent = "Terminer la séance";
+            btn.className = "w-full py-5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-xl shadow-emerald-600/30 active:scale-95 transition-all uppercase tracking-wide";
+            btn.onclick = finishS4Workout;
+          } else {
+            startS4RestTimer();
+          }
+        }
+      }, 1000);
+    }
+
+    function startS4RestTimer() {
+      const levelData = S4_LEVELS[s4SelectedLevel];
+      s4TimeLeft = levelData.restSec;
+      updateS4WorkoutUI(true);
+      document.getElementById('s4-ex1-timer-display').textContent = `00:${String(s4TimeLeft).padStart(2,'0')}`;
+
+      clearInterval(s4TimerInterval);
+      s4TimerInterval = setInterval(() => {
+        if (s4IsPaused) return;
+
+        s4TimeLeft--;
+        document.getElementById('s4-ex1-timer-display').textContent = `00:${String(s4TimeLeft).padStart(2,'0')}`;
+
+        if ([3, 2, 1].includes(s4TimeLeft)) playBeep(700, 0.15);
+
+        if (s4TimeLeft <= 0) {
+          clearInterval(s4TimerInterval);
+          playIntermediaryGongSound();
+
+          s4CurrentStep++;
+          startS4WorkTimer();
+        }
+      }, 1000);
+    }
+
+    function finishS4Workout() {
+      const levelData = S4_LEVELS[s4SelectedLevel];
+      showVictory(
+        4,
+        `• Tour du Monde du Gainage accompli !<br>
+         • Niveau choisi : <strong>${levelData.name}</strong> (${levelData.workSec}" travail / ${levelData.restSec}" repos)<br>
+         • 15 séries (3 tours complets) effectuées avec succès !`
+      );
+    }
+
+    /* ===================================================================
+       14. INITIALISATION AU CHARGEMENT
+       =================================================================== */
+    window.onload = function() {
+      showScreen('screen-dashboard');
+    };
+  </script>
+</body>
+</html>
